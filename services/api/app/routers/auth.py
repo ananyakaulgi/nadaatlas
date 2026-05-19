@@ -10,8 +10,6 @@ Endpoints:
   POST /totp/disable    Disable TOTP (requires current password)
   POST /change-password Change password (requires current password)
 """
-from __future__ import annotations
-
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
 from uuid import UUID
