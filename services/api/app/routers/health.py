@@ -10,7 +10,7 @@ from app.schemas.common import HealthResponse
 
 router = APIRouter(tags=["health"])
 
-settings = get_settings
+settings = get_settings()
 
 
 @router.get(

@@ -21,7 +21,7 @@ from starlette.types import ASGIApp
 from app.core.config import get_settings
 
 logger = structlog.get_logger(__name__)
-settings = get_settings
+settings = get_settings()
 
 # ContextVar so structlog processors can read the current request ID without
 # threading it through every call frame.

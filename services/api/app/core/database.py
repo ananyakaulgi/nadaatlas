@@ -9,7 +9,7 @@ from sqlalchemy import text
 
 from app.core.config import get_settings
 
-settings = get_settings
+settings = get_settings()
 
 _engine = None
 _async_session_local = None

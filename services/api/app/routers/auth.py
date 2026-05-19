@@ -50,7 +50,7 @@ from app.schemas.auth import (
 from app.core.config import get_settings
 
 logger = structlog.get_logger(__name__)
-settings = get_settings
+settings = get_settings()
 
 router = APIRouter(prefix="/api/v1/auth", tags=["auth"])
 
