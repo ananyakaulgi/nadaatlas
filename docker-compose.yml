@@ -14,7 +14,6 @@ services:
         published: 5432
         protocol: tcp
         mode: host
-    profiles: [dev]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 10s
@@ -35,7 +34,6 @@ services:
         published: 6379
         protocol: tcp
         mode: host
-    profiles: [dev]
     healthcheck:
       test: ["CMD-SHELL", "redis-cli -a $$REDIS_PASSWORD ping"]
       interval: 10s
@@ -60,7 +58,6 @@ services:
         published: 9200
         protocol: tcp
         mode: host
-    profiles: [dev]
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
       interval: 15s
@@ -88,7 +85,6 @@ services:
         published: 9001
         protocol: tcp
         mode: host
-    profiles: [dev]
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:9000/minio/health/live || exit 1"]
       interval: 10s

@@ -59,7 +59,7 @@ fi
 
 # ── 4. Start stateful infrastructure services ─────────────────────────────────
 info "Starting infrastructure services (postgres, redis, elasticsearch, minio) …"
-docker compose --profile dev up -d postgres redis elasticsearch minio
+docker compose up -d postgres redis elasticsearch minio
 
 # ── 5. Wait for postgres to be healthy ───────────────────────────────────────
 info "Waiting for postgres to be healthy …"
@@ -84,7 +84,7 @@ success "Migrations complete."
 
 # ── 7. Start application services ─────────────────────────────────────────────
 info "Starting api and worker services …"
-docker compose --profile dev up -d api worker
+docker compose up -d api worker
 
 # ── 8. Done ───────────────────────────────────────────────────────────────────
 echo ""
@@ -92,5 +92,5 @@ success "NādaAtlas is running at http://localhost:8000/api/docs"
 success "Adminer (DB UI)  →  http://localhost:8080"
 success "MinIO console    →  http://localhost:9001"
 echo ""
-info  "To tail all logs:  docker compose --profile dev logs -f"
-info  "To stop all:       docker compose --profile dev down"
+info  "To tail all logs:  docker compose logs -f"
+info  "To stop all:       docker compose down"
