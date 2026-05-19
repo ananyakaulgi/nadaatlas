@@ -8,11 +8,7 @@ from alembic import context
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from sqlalchemy.pool import NullPool
 
-# Import all models so metadata is fully populated
-import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
-
-from services.api.app.models import Base  # noqa: E402
+from app.models import Base
 
 # Alembic Config object — provides access to .ini values
 config = context.config

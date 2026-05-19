@@ -25,8 +25,10 @@ RUN groupadd --gid 1001 appuser && \
 
 WORKDIR /app
 
-# Copy application code
+# Copy application code and migration files
 COPY app/ ./app/
+COPY migrations/ ./migrations/
+COPY alembic.ini .
 
 # Set ownership
 RUN chown -R appuser:appuser /app
