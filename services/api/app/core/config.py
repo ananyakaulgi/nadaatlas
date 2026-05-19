@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    APP_NAME: str = "NādaAtlas"
+    APP_NAME: str = "MusiCompass"
     APP_ENV: str = "development"  # "development" | "staging" | "production"
     DEBUG: bool = False
 
@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
     # MusicBrainz
-    MUSICBRAINZ_APP_NAME: str = "NādaAtlas"
+    MUSICBRAINZ_APP_NAME: str = "MusiCompass"
     MUSICBRAINZ_VERSION: str = "0.1.0"
     MUSICBRAINZ_CONTACT: str = ""
 

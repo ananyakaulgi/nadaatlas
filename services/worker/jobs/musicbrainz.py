@@ -19,6 +19,26 @@ from jobs.base import BaseIngestionJob
 
 logger = structlog.get_logger(__name__)
 
+
+def _normalize_mb_date(date_str: str | None):
+    """Convert a partial MusicBrainz date string to a Python datetime.date.
+
+    MusicBrainz returns "1920", "1920-04", or "1920-04-07".
+    asyncpg requires a datetime.date object (not a string).
+    Returns None on any parse failure.
+    """
+    from datetime import date
+    if not date_str:
+        return None
+    try:
+        parts = date_str.split("-")
+        year = int(parts[0])
+        month = int(parts[1]) if len(parts) > 1 else 1
+        day = int(parts[2]) if len(parts) > 2 else 1
+        return date(year, month, day)
+    except (ValueError, IndexError):
+        return None
+
 # ---------------------------------------------------------------------------
 # Tradition → MusicBrainz tag mapping
 # ---------------------------------------------------------------------------
@@ -130,12 +150,7 @@ class MusicBrainzIngestionJob(BaseIngestionJob):
                 full: dict[str, Any] = await asyncio.to_thread(
                     musicbrainzngs.get_artist_by_id,
                     mb_id,
-                    includes=[
-                        "recordings",
-                        "release-groups",
-                        "tags",
-                        "url-rels",
-                    ],
+                    includes=["release-groups", "tags", "url-rels"],
                 )
                 artist_data = full.get("artist", {})
                 mapped = self._map_artist(
@@ -206,8 +221,8 @@ class MusicBrainzIngestionJob(BaseIngestionJob):
             "musicbrainz_id": mb_artist.get("id"),
             "wikidata_id": self._extract_wikidata_id(mb_artist),
             "spotify_id": None,  # enriched later by spotify job
-            "born": life_span.get("begin"),
-            "died": life_span.get("end") if life_span.get("ended") else None,
+            "born": _normalize_mb_date(life_span.get("begin")),
+            "died": _normalize_mb_date(life_span.get("end")) if life_span.get("ended") else None,
             "birth_place": area.get("name"),
             "nationality": country_code or None,
             "musical_tradition": tradition,
@@ -230,8 +245,14 @@ class MusicBrainzIngestionJob(BaseIngestionJob):
         rg: dict[str, Any],
         artist_musicbrainz_id: str,
     ) -> None:
-        """Upsert a release-group as an album record."""
+        """Upsert a release-group as an album record.
+
+        Looks up the artist UUID via musicbrainz_id subquery — the artist must
+        already be upserted before this is called.
+        """
         from sqlalchemy import text
+
+        release_date = _normalize_mb_date(rg.get("first-release-date"))
 
         stmt = text(
             """
@@ -241,23 +262,24 @@ class MusicBrainzIngestionJob(BaseIngestionJob):
                 release_date,
                 album_type,
                 musicbrainz_id,
-                artist_musicbrainz_id,
+                artist_id,
                 updated_at
-            ) VALUES (
+            )
+            SELECT
                 gen_random_uuid(),
                 :title,
                 :release_date,
                 :album_type,
                 :musicbrainz_id,
-                :artist_musicbrainz_id,
+                a.id,
                 now()
-            )
+            FROM artists a
+            WHERE a.musicbrainz_id = :artist_musicbrainz_id
             ON CONFLICT (musicbrainz_id) DO UPDATE SET
-                title                 = EXCLUDED.title,
-                release_date          = COALESCE(EXCLUDED.release_date, albums.release_date),
-                album_type            = COALESCE(EXCLUDED.album_type, albums.album_type),
-                artist_musicbrainz_id = EXCLUDED.artist_musicbrainz_id,
-                updated_at            = now()
+                title        = EXCLUDED.title,
+                release_date = COALESCE(EXCLUDED.release_date, albums.release_date),
+                album_type   = COALESCE(EXCLUDED.album_type, albums.album_type),
+                updated_at   = now()
             """
         )
         async with self._session_factory() as session:
@@ -265,7 +287,7 @@ class MusicBrainzIngestionJob(BaseIngestionJob):
                 stmt,
                 {
                     "title": rg.get("title"),
-                    "release_date": rg.get("first-release-date"),
+                    "release_date": release_date,
                     "album_type": rg.get("primary-type"),
                     "musicbrainz_id": rg.get("id"),
                     "artist_musicbrainz_id": artist_musicbrainz_id,

@@ -29,6 +29,7 @@ class Instrument(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     origin_region: Mapped[str | None] = mapped_column(String(255), nullable=True)
     materials: Mapped[list[str] | None] = mapped_column(ARRAY(String), nullable=True)
+    wikipedia_slug: Mapped[str | None] = mapped_column(String(512), nullable=True)
     image_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)
 
     # Relationships

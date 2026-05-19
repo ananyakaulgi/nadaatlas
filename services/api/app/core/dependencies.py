@@ -1,19 +1,12 @@
 from typing import Annotated
 
-from fastapi import Depends, HTTPException, Query, status
+from fastapi import Depends, Query
 
+from app.core.auth import get_current_user  # real JWT auth dependency
 from app.core.database import get_db  # re-export
 from app.schemas.common import PaginationParams
 
 __all__ = ["get_db", "get_current_user", "get_pagination"]
-
-
-async def get_current_user():
-    """Stub — replaced by the security layer once auth is wired up."""
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="Authentication not yet configured.",
-    )
 
 
 def get_pagination(

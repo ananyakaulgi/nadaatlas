@@ -23,6 +23,7 @@ class MusicalTradition(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
     subregion: Mapped[str | None] = mapped_column(String(255), nullable=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     origin_period: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    wikipedia_slug: Mapped[str | None] = mapped_column(String(512), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
     # Relationships

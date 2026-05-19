@@ -14,6 +14,7 @@ class InstrumentBase(BaseModel):
     description: str | None = None
     origin_region: str | None = None
     materials: list[str] | None = None
+    wikipedia_slug: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -31,6 +32,7 @@ class InstrumentUpdate(BaseModel):
     origin_region: str | None = None
     materials: list[str] | None = None
     tradition_id: UUID | None = None
+    wikipedia_slug: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
 

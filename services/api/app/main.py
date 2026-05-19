@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
+from redis.asyncio import Redis
 
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -24,12 +25,16 @@ async def lifespan(app: FastAPI):
     logger.info("startup", app=settings.APP_NAME, env=settings.APP_ENV)
     await init_db()
     logger.info("database_connected")
+    redis = Redis.from_url(settings.REDIS_URL, encoding="utf-8", decode_responses=False)
+    app.state.redis = redis
+    logger.info("redis_connected")
     yield
+    await redis.aclose()
     logger.info("shutdown")
 
 
 app = FastAPI(
-    title="NādaAtlas API",
+    title="MusiCompass API",
     version="0.1.0",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
@@ -97,3 +102,35 @@ try:
     app.include_router(auth_router.router)
 except ImportError:
     logger.warning("auth_router_not_found", detail="Security layer not yet installed")
+
+
+# ---------------------------------------------------------------------------
+# Patch OpenAPI schema to add HTTPBearer so Swagger shows a plain token field
+# ---------------------------------------------------------------------------
+from fastapi.openapi.utils import get_openapi  # noqa: E402
+
+
+def _custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    schema = get_openapi(
+        title=app.title,
+        version=app.version,
+        routes=app.routes,
+    )
+    schema.setdefault("components", {}).setdefault("securitySchemes", {})
+    schema["components"]["securitySchemes"]["BearerAuth"] = {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+    }
+    # Add BearerAuth as an option on every operation
+    for path_item in schema.get("paths", {}).values():
+        for operation in path_item.values():
+            if isinstance(operation, dict) and "security" in operation:
+                operation["security"].append({"BearerAuth": []})
+    app.openapi_schema = schema
+    return schema
+
+
+app.openapi = _custom_openapi

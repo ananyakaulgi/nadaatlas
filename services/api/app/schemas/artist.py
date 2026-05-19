@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, HttpUrl
+from pydantic import BaseModel, ConfigDict, HttpUrl, field_validator
 
 from app.schemas.tradition import TraditionSummary
 from app.schemas.instrument import InstrumentSummary
@@ -21,6 +21,14 @@ class ArtistBase(BaseModel):
     website_url: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
+
+    @field_validator("born", "died", mode="before")
+    @classmethod
+    def coerce_year_to_date(cls, v):
+        """Accept a bare year integer (e.g. 1920) and convert to Jan 1 of that year."""
+        if isinstance(v, int):
+            return date(v, 1, 1)
+        return v
 
 
 class ArtistCreate(ArtistBase):
@@ -48,6 +56,13 @@ class ArtistUpdate(BaseModel):
     wikidata_id: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
+
+    @field_validator("born", "died", mode="before")
+    @classmethod
+    def coerce_year_to_date(cls, v):
+        if isinstance(v, int):
+            return date(v, 1, 1)
+        return v
 
 
 class ArtistResponse(ArtistBase):

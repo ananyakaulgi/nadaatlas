@@ -3,6 +3,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -70,7 +71,14 @@ async def create_tradition(
 
     tradition = Tradition(**payload.model_dump())
     db.add(tradition)
-    await db.flush()
+    try:
+        await db.flush()
+    except IntegrityError:
+        await db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="A tradition with that name already exists.",
+        )
     await db.refresh(tradition)
     logger.info("create_tradition", id=str(tradition.id))
     return tradition

@@ -11,6 +11,7 @@ class TraditionBase(BaseModel):
     subregion: str | None = None
     description: str | None = None
     origin_period: str | None = None
+    wikipedia_slug: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -26,6 +27,7 @@ class TraditionUpdate(BaseModel):
     subregion: str | None = None
     description: str | None = None
     origin_period: str | None = None
+    wikipedia_slug: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
 

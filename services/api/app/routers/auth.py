@@ -15,7 +15,7 @@ from typing import Annotated
 from uuid import UUID
 
 import structlog
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from redis.asyncio import Redis
 from sqlalchemy import select
@@ -107,6 +107,7 @@ async def _reset_login_state(db: AsyncSession, user: User) -> None:
 @limiter.limit("10/minute")
 async def login(
     request: Request,
+    response: Response,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: Annotated[AsyncSession, Depends(get_db)],
 ) -> TokenResponse:
@@ -164,6 +165,7 @@ async def login(
 @limiter.limit("10/minute")
 async def login_json(
     request: Request,
+    response: Response,
     body: LoginRequest,
     db: Annotated[AsyncSession, Depends(get_db)],
 ) -> TokenResponse:
@@ -213,6 +215,7 @@ async def login_json(
 @limiter.limit("20/minute")
 async def refresh_token(
     request: Request,
+    response: Response,
     body: RefreshRequest,
     db: Annotated[AsyncSession, Depends(get_db)],
     redis_client: Annotated[Redis, Depends(get_redis)],
@@ -333,6 +336,7 @@ async def totp_setup(
 @limiter.limit("5/minute")
 async def totp_verify(
     request: Request,
+    response: Response,
     body: TOTPVerifyRequest,
     current_user: Annotated[User, Depends(get_current_user)],
     db: Annotated[AsyncSession, Depends(get_db)],
@@ -364,6 +368,7 @@ async def totp_verify(
 @limiter.limit("5/minute")
 async def totp_disable(
     request: Request,
+    response: Response,
     body: ChangePasswordRequest,
     current_user: Annotated[User, Depends(get_current_user)],
     db: Annotated[AsyncSession, Depends(get_db)],
@@ -398,6 +403,7 @@ async def totp_disable(
 @limiter.limit("5/minute")
 async def change_password(
     request: Request,
+    response: Response,
     body: ChangePasswordRequest,
     current_user: Annotated[User, Depends(get_current_user)],
     db: Annotated[AsyncSession, Depends(get_db)],

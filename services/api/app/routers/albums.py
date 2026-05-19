@@ -3,6 +3,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func, select
+from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -24,7 +25,7 @@ async def list_albums(
 ):
     from app.models.album import Album
 
-    stmt = select(Album).where(Album.deleted_at.is_(None))
+    stmt = select(Album).where(Album.deleted_at.is_(None)).options(selectinload(Album.artist))
     if artist_id:
         stmt = stmt.where(Album.artist_id == artist_id)
     if musical_tradition:
@@ -48,7 +49,7 @@ async def get_album(
     stmt = select(Album).where(
         Album.id == album_id,
         Album.deleted_at.is_(None),
-    )
+    ).options(selectinload(Album.artist))
     album = (await db.execute(stmt)).scalar_one_or_none()
     if album is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Album not found")
