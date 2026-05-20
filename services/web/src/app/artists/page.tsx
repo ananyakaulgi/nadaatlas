@@ -2,6 +2,8 @@ import { getArtists } from '@/lib/api'
 import ArtistsClient from './ArtistsClient'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Artists',
   description: 'Discover artists and musicians from world music traditions',
@@ -16,10 +18,10 @@ export default async function ArtistsPage({
   let artists: Awaited<ReturnType<typeof getArtists>>['items'] = []
 
   try {
-    const result = await getArtists({ limit: 200 })
+    const result = await getArtists({ limit: 100 })
     artists = result.items
-  } catch {
-    // API not available
+  } catch (err) {
+    console.error('[ArtistsPage] Failed to fetch:', err)
   }
 
   return (

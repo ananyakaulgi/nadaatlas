@@ -2,6 +2,8 @@ import { getTraditions } from '@/lib/api'
 import TraditionsClient from './TraditionsClient'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Traditions',
   description: 'Explore musical traditions from every corner of the world',
@@ -16,10 +18,10 @@ export default async function TraditionsPage({
   let traditions: Awaited<ReturnType<typeof getTraditions>>['items'] = []
 
   try {
-    const result = await getTraditions({ limit: 200 })
+    const result = await getTraditions({ limit: 100 })
     traditions = result.items
-  } catch {
-    // API not available
+  } catch (err) {
+    console.error('[TraditionsPage] Failed to fetch:', err)
   }
 
   return (

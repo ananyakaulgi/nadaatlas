@@ -5,6 +5,8 @@ import Badge from '@/components/ui/Badge'
 import { ExternalLink, ChevronRight } from 'lucide-react'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata({
   params,
 }: {

@@ -2,6 +2,8 @@ import { getAlbums } from '@/lib/api'
 import AlbumsClient from './AlbumsClient'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Albums',
   description: 'Recordings from world music traditions',
@@ -16,10 +18,10 @@ export default async function AlbumsPage({
   let albums: Awaited<ReturnType<typeof getAlbums>>['items'] = []
 
   try {
-    const result = await getAlbums({ limit: 200 })
+    const result = await getAlbums({ limit: 100 })
     albums = result.items
-  } catch {
-    // API not available
+  } catch (err) {
+    console.error('[AlbumsPage] Failed to fetch:', err)
   }
 
   return (

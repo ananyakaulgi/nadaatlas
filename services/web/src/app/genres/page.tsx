@@ -2,6 +2,8 @@ import { getArtists } from '@/lib/api'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Browse by Genre',
   description: 'Explore world music by genre and musical tradition',
@@ -11,14 +13,14 @@ export default async function GenresPage() {
   let genreCounts: Record<string, number> = {}
 
   try {
-    const result = await getArtists({ limit: 500 })
+    const result = await getArtists({ limit: 100 })
     for (const a of result.items) {
       if (a.musical_tradition) {
         genreCounts[a.musical_tradition] = (genreCounts[a.musical_tradition] || 0) + 1
       }
     }
-  } catch {
-    // API not available
+  } catch (err) {
+    console.error('[GenresPage] Failed to fetch:', err)
   }
 
   const genreEntries = Object.entries(genreCounts).sort((a, b) => b[1] - a[1])

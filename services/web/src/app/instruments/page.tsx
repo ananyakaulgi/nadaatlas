@@ -2,6 +2,8 @@ import { getInstruments } from '@/lib/api'
 import InstrumentsClient from './InstrumentsClient'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Instruments',
   description: 'Musical instruments from traditions around the world',
@@ -11,10 +13,10 @@ export default async function InstrumentsPage() {
   let instruments: Awaited<ReturnType<typeof getInstruments>>['items'] = []
 
   try {
-    const result = await getInstruments({ limit: 200 })
+    const result = await getInstruments({ limit: 100 })
     instruments = result.items
-  } catch {
-    // API not available
+  } catch (err) {
+    console.error('[InstrumentsPage] Failed to fetch:', err)
   }
 
   return (

@@ -4,7 +4,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 async function fetchAPI<T>(path: string): Promise<T> {
   const url = `${BASE_URL}${path}`
-  const res = await fetch(url, { next: { revalidate: 60 } })
+  const res = await fetch(url, { cache: 'no-store' })
   if (!res.ok) {
     throw new Error(`API error ${res.status}: ${url}`)
   }

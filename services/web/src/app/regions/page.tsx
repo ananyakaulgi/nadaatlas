@@ -2,6 +2,8 @@ import { getTraditions } from '@/lib/api'
 import RegionCard from '@/components/cards/RegionCard'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Regions',
   description: 'Browse musical traditions by world region',
@@ -11,14 +13,14 @@ export default async function RegionsPage() {
   let regions: Record<string, number> = {}
 
   try {
-    const result = await getTraditions({ limit: 200 })
+    const result = await getTraditions({ limit: 100 })
     for (const t of result.items) {
       if (t.region) {
         regions[t.region] = (regions[t.region] || 0) + 1
       }
     }
-  } catch {
-    // API not available
+  } catch (err) {
+    console.error('[RegionsPage] Failed to fetch:', err)
   }
 
   const regionEntries = Object.entries(regions).sort((a, b) => b[1] - a[1])

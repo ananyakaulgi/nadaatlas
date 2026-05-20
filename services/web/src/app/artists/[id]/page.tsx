@@ -6,6 +6,8 @@ import AlbumCard from '@/components/cards/AlbumCard'
 import { ExternalLink, ChevronRight, MapPin } from 'lucide-react'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 function formatYear(dateStr: string | null): string | null {
   if (!dateStr) return null
   try { return String(new Date(dateStr).getFullYear()) } catch { return null }

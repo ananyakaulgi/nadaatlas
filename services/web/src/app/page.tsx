@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import { getTraditions } from '@/lib/api'
+
+export const dynamic = 'force-dynamic'
 import TraditionCard from '@/components/cards/TraditionCard'
 import RegionCard from '@/components/cards/RegionCard'
 import { Music2, Users, Disc3, Piano } from 'lucide-react'
@@ -56,8 +58,8 @@ export default async function HomePage() {
         regions[t.region] = (regions[t.region] || 0) + 1
       }
     }
-  } catch {
-    // API not available — show graceful fallback
+  } catch (err) {
+    console.error('[HomePage] Failed to fetch traditions:', err)
   }
 
   const featuredTraditions = traditions.slice(0, 6)
