@@ -3,7 +3,9 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from redis.asyncio import Redis
+from sqlalchemy.exc import IntegrityError
 
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -43,6 +45,15 @@ app = FastAPI(
 
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+
+@app.exception_handler(IntegrityError)
+async def integrity_error_handler(request: Request, exc: IntegrityError) -> JSONResponse:
+    """Return 409 Conflict for unique-constraint / FK violations instead of 500."""
+    return JSONResponse(
+        status_code=409,
+        content={"error": "Resource already exists or violates a uniqueness constraint"},
+    )
 
 # ---------------------------------------------------------------------------
 # Sentry (optional — only initialised when DSN is configured)

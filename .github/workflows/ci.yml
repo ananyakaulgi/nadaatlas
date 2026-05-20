@@ -1,0 +1,139 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-api:
+    name: Lint API & Worker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install linting tools
+        run: pip install ruff mypy
+
+      - name: Ruff check
+        run: ruff check services/api/app services/worker
+
+      - name: Mypy check
+        run: mypy services/api/app --ignore-missing-imports --no-strict-optional
+
+  test-api:
+    name: Test API
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: nadaatlas
+          POSTGRES_PASSWORD: 75b1675d8970658acea1d887c13203c1
+          POSTGRES_DB: nadaatlas_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U nadaatlas"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql+asyncpg://nadaatlas:75b1675d8970658acea1d887c13203c1@localhost:5432/nadaatlas_test
+      REDIS_URL: redis://localhost:6379/0
+      SECRET_KEY: ci-test-secret-key-not-for-production
+      JWT_PRIVATE_KEY_PATH: secrets/jwt_private.pem
+      JWT_PUBLIC_KEY_PATH: secrets/jwt_public.pem
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r services/api/requirements.txt -r services/api/requirements-dev.txt
+
+      - name: Generate JWT keys
+        run: |
+          mkdir -p services/api/secrets
+          openssl genrsa -out services/api/secrets/jwt_private.pem 2048
+          openssl rsa -in services/api/secrets/jwt_private.pem -pubout -out services/api/secrets/jwt_public.pem
+
+      - name: Run tests with coverage
+        working-directory: services/api
+        run: pytest --cov=app --cov-report=xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        continue-on-error: true
+        with:
+          files: services/api/coverage.xml
+          flags: api
+          fail_ci_if_error: false
+
+  lint-frontend:
+    name: Lint Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: services/web/package-lock.json
+
+      - name: Install dependencies
+        working-directory: services/web
+        run: npm ci
+
+      - name: Run lint
+        working-directory: services/web
+        run: npm run lint
+
+  build-frontend:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: services/web/package-lock.json
+
+      - name: Install dependencies
+        working-directory: services/web
+        run: npm ci
+
+      - name: Build
+        working-directory: services/web
+        run: npm run build
