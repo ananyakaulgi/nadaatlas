@@ -29,6 +29,7 @@ def configure_logging(settings: Settings) -> None:
         structlog.processors.StackInfoRenderer(),
     ]
 
+    renderer: structlog.processors.JSONRenderer | structlog.dev.ConsoleRenderer
     if settings.APP_ENV == "production":
         renderer = structlog.processors.JSONRenderer()
     else:
