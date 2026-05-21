@@ -12,7 +12,7 @@ class PaginationParams(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class PaginatedResponse(BaseModel, Generic[T]):
+class PaginatedResponse(BaseModel, Generic[T]):  # noqa: UP046
     items: list[T]
     total: int
     skip: int
