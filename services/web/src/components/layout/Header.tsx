@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { Menu, X, Compass } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import clsx from 'clsx'
 
 const NAV_LINKS = [
@@ -23,10 +23,10 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="group flex items-center gap-2.5">
-            <Compass className="w-6 h-6 text-[#f59e0b] group-hover:text-[#fbbf24] transition-colors drop-shadow-[0_0_8px_rgba(245,158,11,0.6)]" />
-            <span className="font-display text-2xl text-[#f5f0ff] group-hover:text-[#c4b5fd] transition-colors tracking-wide">
-              MusiCompass
+          <Link href="/" className="group flex items-center gap-1">
+            <span className="font-display text-2xl tracking-wide leading-none">
+              <span className="text-[#f59e0b] group-hover:text-[#fbbf24] transition-colors drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">नाद</span>
+              <span className="text-[#f5f0ff] group-hover:text-[#c4b5fd] transition-colors"> Atla𝄞</span>
             </span>
           </Link>
 

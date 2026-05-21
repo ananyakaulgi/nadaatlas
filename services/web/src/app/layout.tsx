@@ -11,10 +11,10 @@ import CosmicCompass from '@/components/ui/CosmicCompass'
 
 export const metadata: Metadata = {
   title: {
-    default: 'MusiCompass — Navigate the World\'s Musical Traditions',
-    template: '%s · MusiCompass',
+    default: 'नाद Atla𝄞 — Your Complete Encyclopedia for Musical Research',
+    template: '%s · नाद Atla𝄞',
   },
-  description: 'Navigate the world\'s musical traditions — explore traditions, artists, albums, and instruments from across the globe.',
+  description: 'नाद Atla𝄞 (Nāda Atlas) — your complete encyclopedia for musical research and information. Explore traditions, artists, albums, and instruments from across the globe.',
 }
 
 export default function RootLayout({

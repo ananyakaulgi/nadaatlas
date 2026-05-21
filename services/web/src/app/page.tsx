@@ -82,19 +82,33 @@ export default async function HomePage() {
 
         {/* Hero text */}
         <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <div className="mb-3">
-            <span className="inline-block text-[#f59e0b] text-sm font-medium tracking-[0.2em] uppercase opacity-80">
-              ♪ &nbsp; Your musical compass &nbsp; ♪
+          <div className="mb-6">
+            <span className="inline-block text-[#f59e0b] text-xs font-medium tracking-[0.25em] uppercase opacity-70">
+              𝄞 &nbsp; Your complete encyclopedia for musical research &nbsp; 𝄞
             </span>
           </div>
           <h1
-            className="font-display text-7xl sm:text-8xl md:text-9xl text-[#f5f0ff] mb-6 leading-none tracking-tight"
+            className="font-display leading-none mb-3"
             style={{ textShadow: '0 0 60px rgba(124,58,237,0.35), 0 0 120px rgba(124,58,237,0.12)' }}
           >
-            MusiCompass
+            <span
+              className="block text-[#f59e0b]"
+              style={{ fontSize: 'clamp(3.5rem, 12vw, 8rem)', letterSpacing: '-0.02em' }}
+            >
+              नाद
+            </span>
+            <span
+              className="block text-[#f5f0ff]"
+              style={{ fontSize: 'clamp(3.5rem, 12vw, 8rem)', letterSpacing: '-0.02em' }}
+            >
+              Atla𝄞
+            </span>
           </h1>
-          <p className="font-display text-2xl sm:text-3xl text-[#c4b5fd] italic font-light mb-8 leading-relaxed">
-            Navigate the world&apos;s musical traditions
+          <p className="text-[#a89fc4] text-sm tracking-[0.15em] mb-8 uppercase">
+            Nāda Atlas
+          </p>
+          <p className="font-display text-xl sm:text-2xl text-[#c4b5fd] italic font-light mb-4 leading-relaxed">
+            The world&apos;s music, all in one place.
           </p>
           <p className="text-[#a89fc4] text-lg max-w-2xl mx-auto leading-relaxed mb-12">
             Journey through centuries of sound — from the highlands of Ethiopia to the rivers of Bengal,

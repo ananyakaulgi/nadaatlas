@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { Compass } from 'lucide-react'
 
 export default function Footer() {
   return (
@@ -7,11 +6,14 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left">
-            <div className="flex items-center gap-2 mb-1 justify-center md:justify-start">
-              <Compass className="w-5 h-5 text-[#f59e0b] drop-shadow-[0_0_6px_rgba(245,158,11,0.5)]" />
-              <p className="font-display text-xl text-[#f5f0ff]">MusiCompass</p>
+            <div className="flex items-center gap-1 mb-1 justify-center md:justify-start">
+              <p className="font-display text-xl">
+                <span className="text-[#f59e0b]">नाद</span>
+                <span className="text-[#f5f0ff]"> Atla𝄞</span>
+              </p>
             </div>
-            <p className="text-sm text-[#a89fc4]">Navigate the world&apos;s musical traditions</p>
+            <p className="text-xs text-[#a89fc4] italic">Nāda Atlas</p>
+            <p className="text-sm text-[#a89fc4]">Your complete encyclopedia for musical research</p>
           </div>
 
           <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2">
@@ -36,7 +38,7 @@ export default function Footer() {
 
         <div className="mt-8 pt-6 border-t border-[rgba(124,58,237,0.15)] text-center">
           <p className="text-xs text-[#6b5d8a]">
-            MusiCompass · Navigate the world&apos;s musical traditions
+            नाद Atla𝄞 · Your complete encyclopedia for musical research
           </p>
         </div>
       </div>
