@@ -30,26 +30,25 @@ from __future__ import annotations
 
 import asyncio
 import os
-from typing import AsyncGenerator
-from uuid import UUID
+
+# ---------------------------------------------------------------------------
+# Ensure tests can import `app` regardless of working directory
+# ---------------------------------------------------------------------------
+import sys
+from collections.abc import AsyncGenerator
 
 import asyncpg
 import pytest
 import pytest_asyncio
 from fakeredis.aioredis import FakeRedis
 from httpx import ASGITransport, AsyncClient
-from sqlalchemy.pool import NullPool
 from sqlalchemy.ext.asyncio import (
     AsyncConnection,
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
-
-# ---------------------------------------------------------------------------
-# Ensure tests can import `app` regardless of working directory
-# ---------------------------------------------------------------------------
-import sys
+from sqlalchemy.pool import NullPool
 
 _API_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _API_ROOT not in sys.path:
@@ -82,17 +81,16 @@ os.environ.setdefault("SECRET_KEY", "test-secret-key-for-ci-do-not-use-in-produc
 # ---------------------------------------------------------------------------
 # App imports — must come AFTER env vars are set so Settings resolves correctly
 # ---------------------------------------------------------------------------
-from app.main import app  # noqa: E402
-from app.core.database import get_db  # noqa: E402
 from app.core.auth import get_redis  # noqa: E402
-from app.models.base import Base  # noqa: E402
-from app.models.user import User  # noqa: E402
-from app.models.tradition import MusicalTradition  # noqa: E402
-from app.models.artist import Artist  # noqa: E402
-from app.models.album import Album  # noqa: E402
-from app.models.instrument import Instrument  # noqa: E402
+from app.core.database import get_db  # noqa: E402
 from app.core.security import hash_password  # noqa: E402
-
+from app.main import app  # noqa: E402
+from app.models.album import Album  # noqa: E402
+from app.models.artist import Artist  # noqa: E402
+from app.models.base import Base  # noqa: E402
+from app.models.instrument import Instrument  # noqa: E402
+from app.models.tradition import MusicalTradition  # noqa: E402
+from app.models.user import User  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Session-scoped: ensure test database exists + schema is ready
@@ -118,7 +116,6 @@ async def test_db_engine():
     5. Drops all tables at teardown so the next run starts clean.
     """
     # ── Step 1: create test DB if missing ────────────────────────────────────
-    raw_admin_url = ADMIN_DATABASE_URL.replace("+asyncpg", "")
     try:
         conn = await asyncpg.connect(
             f"postgresql://nadaatlas:75b1675d8970658acea1d887c13203c1"
@@ -151,14 +148,14 @@ async def test_db_engine():
             __import__("sqlalchemy").text("CREATE EXTENSION IF NOT EXISTS vector")
         )
         # Import all models so metadata is populated
-        import app.models.user  # noqa: F401
-        import app.models.tradition  # noqa: F401
-        import app.models.artist  # noqa: F401
         import app.models.album  # noqa: F401
-        import app.models.instrument  # noqa: F401
+        import app.models.artist  # noqa: F401
         import app.models.artist_instrument  # noqa: F401
+        import app.models.instrument  # noqa: F401
         import app.models.tag  # noqa: F401
         import app.models.track  # noqa: F401
+        import app.models.tradition  # noqa: F401
+        import app.models.user  # noqa: F401
 
         await conn.run_sync(Base.metadata.create_all, checkfirst=True)
 

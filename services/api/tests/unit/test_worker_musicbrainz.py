@@ -10,8 +10,6 @@ from __future__ import annotations
 from datetime import date
 from typing import Any
 
-import pytest
-
 # ---------------------------------------------------------------------------
 # Inline the pure functions under test — these mirror services/worker/jobs/musicbrainz.py
 # If the implementations drift, the tests will catch the regression.

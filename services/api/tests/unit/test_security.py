@@ -9,15 +9,15 @@ Tests the pure cryptographic primitives without database or network access:
 from __future__ import annotations
 
 import os
-import time
-from datetime import datetime, timedelta, timezone
+
+# Ensure the API root is importable regardless of working directory
+import sys
+from datetime import UTC, datetime, timedelta
 
 import pytest
 from fastapi import HTTPException
 from jose import jwt
 
-# Ensure the API root is importable regardless of working directory
-import sys
 _API_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 if _API_ROOT not in sys.path:
     sys.path.insert(0, _API_ROOT)
@@ -26,6 +26,7 @@ if _API_ROOT not in sys.path:
 os.environ.setdefault("DATABASE_URL", "postgresql+asyncpg://user:pass@localhost/test")
 os.environ.setdefault("SECRET_KEY", "unit-test-secret-key-not-for-production")
 
+from app.core.config import get_settings  # noqa: E402
 from app.core.security import (  # noqa: E402
     create_access_token,
     create_refresh_token,
@@ -33,8 +34,6 @@ from app.core.security import (  # noqa: E402
     hash_password,
     verify_password,
 )
-from app.core.config import get_settings  # noqa: E402
-
 
 settings = get_settings()
 
@@ -110,7 +109,7 @@ class TestCreateAccessToken:
         payload = decode_token(token)
         assert "exp" in payload
         # exp must be in the future
-        assert payload["exp"] > datetime.now(tz=timezone.utc).timestamp()
+        assert payload["exp"] > datetime.now(tz=UTC).timestamp()
 
     def test_additional_claims_are_included(self) -> None:
         token = create_access_token("user-uuid-xyz", additional_claims={"role": "editor"})
@@ -160,7 +159,7 @@ class TestDecodeToken:
         """Forge a token that already expired and confirm decode raises 401."""
         from pathlib import Path
 
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         expired_payload = {
             "sub": "user-uuid-expired",
             "iat": now - timedelta(hours=2),
@@ -196,7 +195,7 @@ class TestDecodeToken:
         """A token signed with HS256 (wrong algorithm) must be rejected."""
         payload = {
             "sub": "user-uuid-hs256",
-            "exp": datetime.now(tz=timezone.utc) + timedelta(minutes=30),
+            "exp": datetime.now(tz=UTC) + timedelta(minutes=30),
         }
         hs256_token = jwt.encode(payload, "some-secret", algorithm="HS256")
         with pytest.raises(HTTPException) as exc_info:

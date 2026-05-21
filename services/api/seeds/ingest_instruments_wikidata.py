@@ -2,12 +2,12 @@
 Fetch ALL musical instruments from Wikidata (P31=Q34379) and seed into MusiCompass DB.
 Writes SQL to /tmp/instruments_wikidata.sql then pipes it through docker to postgres.
 """
-import requests
-import json
-import time
 import re
 import subprocess
 import sys
+import time
+
+import requests
 
 SPARQL = "https://query.wikidata.org/sparql"
 HEADERS = {"User-Agent": "MusiCompass/1.0 (ananya.kaulgi@gmail.com) Wikidata instrument ingestion"}
@@ -244,7 +244,8 @@ def generate_sql(instruments):
         else:
             existing = by_name[key]
             # Prefer record with more fields filled in
-            score = lambda x: sum(1 for v in x.values() if v)
+            def score(x: dict) -> int:
+                return sum(1 for v in x.values() if v)
             if score(inst) > score(existing):
                 by_name[key] = inst
 

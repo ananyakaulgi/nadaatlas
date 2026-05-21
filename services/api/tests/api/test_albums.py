@@ -11,14 +11,11 @@ Covers:
 from __future__ import annotations
 
 import uuid
-from datetime import date
 
-import pytest
 from httpx import AsyncClient
 
 from app.models.album import Album
 from app.models.artist import Artist
-
 
 # ---------------------------------------------------------------------------
 # GET /api/v1/albums/

@@ -12,12 +12,10 @@ from __future__ import annotations
 
 import uuid
 
-import pytest
 from httpx import AsyncClient
 
 from app.models.artist import Artist
 from app.models.tradition import MusicalTradition
-
 
 # ---------------------------------------------------------------------------
 # GET /api/v1/artists/

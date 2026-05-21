@@ -9,11 +9,9 @@ Covers:
 """
 from __future__ import annotations
 
-import pytest
 from httpx import AsyncClient
 
 from app.models.user import User
-
 
 # ---------------------------------------------------------------------------
 # POST /api/v1/auth/login

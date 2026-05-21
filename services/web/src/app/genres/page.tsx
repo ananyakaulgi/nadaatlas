@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default async function GenresPage() {
-  let genreCounts: Record<string, number> = {}
+  const genreCounts: Record<string, number> = {}
 
   try {
     const result = await getArtists({ limit: 100 })
