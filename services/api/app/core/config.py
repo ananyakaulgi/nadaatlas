@@ -26,8 +26,12 @@ class Settings(BaseSettings):
     MINIO_BUCKET: str = "nadaatlas"
 
     # JWT (RS256 asymmetric keys)
-    JWT_PRIVATE_KEY_PATH: str = "secrets/jwt_private.pem"
-    JWT_PUBLIC_KEY_PATH: str = "secrets/jwt_public.pem"
+    # In production set JWT_PRIVATE_KEY / JWT_PUBLIC_KEY as env vars (PEM content).
+    # In development the app falls back to reading from JWT_*_KEY_PATH files.
+    JWT_PRIVATE_KEY: str = ""          # PEM content as env var (preferred in prod)
+    JWT_PUBLIC_KEY: str = ""           # PEM content as env var (preferred in prod)
+    JWT_PRIVATE_KEY_PATH: str = "secrets/jwt_private.pem"  # fallback (dev only)
+    JWT_PUBLIC_KEY_PATH: str = "secrets/jwt_public.pem"    # fallback (dev only)
     JWT_ALGORITHM: str = "RS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 7

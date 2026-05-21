@@ -47,12 +47,24 @@ def verify_password(plain: str, hashed: str) -> bool:
 # ---------------------------------------------------------------------------
 
 def load_private_key(path: str) -> bytes:
-    """Read PEM private key from *path*.  Raises FileNotFoundError if missing."""
+    """Return PEM private key bytes.
+
+    Prefers the JWT_PRIVATE_KEY env var (production / Railway).
+    Falls back to reading from *path* (development with local key files).
+    """
+    if settings.JWT_PRIVATE_KEY:
+        return settings.JWT_PRIVATE_KEY.encode()
     return Path(path).read_bytes()
 
 
 def load_public_key(path: str) -> bytes:
-    """Read PEM public key from *path*.  Raises FileNotFoundError if missing."""
+    """Return PEM public key bytes.
+
+    Prefers the JWT_PUBLIC_KEY env var (production / Railway).
+    Falls back to reading from *path* (development with local key files).
+    """
+    if settings.JWT_PUBLIC_KEY:
+        return settings.JWT_PUBLIC_KEY.encode()
     return Path(path).read_bytes()
 
 
