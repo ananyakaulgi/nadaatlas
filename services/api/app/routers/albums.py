@@ -1,16 +1,17 @@
+from datetime import UTC
 from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func, select
-from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
 from app.core.dependencies import get_current_user, get_pagination
 from app.core.logging import get_logger
-from app.schemas.common import PaginatedResponse, PaginationParams
 from app.schemas.album import AlbumCreate, AlbumResponse, AlbumUpdate
+from app.schemas.common import PaginatedResponse, PaginationParams
 
 router = APIRouter(prefix="/api/v1/albums", tags=["albums"])
 logger = get_logger(__name__)
@@ -103,8 +104,9 @@ async def delete_album(
     db: Annotated[AsyncSession, Depends(get_db)],
     _: Annotated[object, Depends(get_current_user)],
 ):
+    from datetime import datetime
+
     from app.models.album import Album
-    from datetime import datetime, timezone
 
     stmt = select(Album).where(
         Album.id == album_id,
@@ -114,6 +116,6 @@ async def delete_album(
     if album is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Album not found")
 
-    album.deleted_at = datetime.now(timezone.utc)
+    album.deleted_at = datetime.now(UTC)
     await db.flush()
     logger.info("delete_album", id=str(album_id))

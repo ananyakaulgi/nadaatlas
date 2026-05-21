@@ -11,12 +11,12 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base, SoftDeleteMixin, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
-    from .tradition import MusicalTradition
-    from .instrument import Instrument
     from .album import Album
-    from .track import Track
     from .artist_instrument import ArtistInstrument
+    from .instrument import Instrument
     from .tag import ArtistTag
+    from .track import Track
+    from .tradition import MusicalTradition
 
 
 class Artist(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):

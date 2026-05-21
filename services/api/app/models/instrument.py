@@ -10,9 +10,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base, SoftDeleteMixin, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
-    from .tradition import MusicalTradition
     from .artist import Artist
     from .artist_instrument import ArtistInstrument
+    from .tradition import MusicalTradition
 
 
 class Instrument(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):

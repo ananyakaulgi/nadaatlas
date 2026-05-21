@@ -1,3 +1,4 @@
+from datetime import UTC
 from typing import Annotated
 from uuid import UUID
 
@@ -8,13 +9,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db
 from app.core.dependencies import get_current_user, get_pagination
 from app.core.logging import get_logger
-from app.schemas.common import PaginatedResponse, PaginationParams
 from app.schemas.artist import (
     ArtistCreate,
     ArtistDetail,
     ArtistResponse,
     ArtistUpdate,
 )
+from app.schemas.common import PaginatedResponse, PaginationParams
 
 router = APIRouter(prefix="/api/v1/artists", tags=["artists"])
 logger = get_logger(__name__)
@@ -135,8 +136,9 @@ async def delete_artist(
     db: Annotated[AsyncSession, Depends(get_db)],
     _: Annotated[object, Depends(get_current_user)],
 ):
+    from datetime import datetime
+
     from app.models.artist import Artist
-    from datetime import datetime, timezone
 
     stmt = select(Artist).where(
         Artist.id == artist_id,
@@ -146,6 +148,6 @@ async def delete_artist(
     if artist is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Artist not found")
 
-    artist.deleted_at = datetime.now(timezone.utc)
+    artist.deleted_at = datetime.now(UTC)
     await db.flush()
     logger.info("delete_artist", id=str(artist_id))

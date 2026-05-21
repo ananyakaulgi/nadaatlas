@@ -1,10 +1,10 @@
 from datetime import date, datetime
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, HttpUrl, field_validator
+from pydantic import BaseModel, ConfigDict, field_validator
 
-from app.schemas.tradition import TraditionSummary
 from app.schemas.instrument import InstrumentSummary
+from app.schemas.tradition import TraditionSummary
 
 
 class ArtistBase(BaseModel):

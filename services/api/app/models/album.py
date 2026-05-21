@@ -11,8 +11,8 @@ from .base import Base, SoftDeleteMixin, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
     from .artist import Artist
-    from .tradition import MusicalTradition
     from .track import Track
+    from .tradition import MusicalTradition
 
 
 class Album(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):

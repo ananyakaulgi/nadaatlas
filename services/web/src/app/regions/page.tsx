@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default async function RegionsPage() {
-  let regions: Record<string, number> = {}
+  const regions: Record<string, number> = {}
 
   try {
     const result = await getTraditions({ limit: 100 })

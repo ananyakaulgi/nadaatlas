@@ -1,3 +1,4 @@
+from datetime import UTC
 from typing import Annotated
 from uuid import UUID
 
@@ -26,7 +27,9 @@ async def list_traditions(
     pagination: Annotated[PaginationParams, Depends(get_pagination)],
     region: str | None = Query(default=None),
 ):
-    from app.models.tradition import MusicalTradition as Tradition  # local import avoids circular deps
+    from app.models.tradition import (
+        MusicalTradition as Tradition,  # local import avoids circular deps
+    )
 
     stmt = select(Tradition).where(Tradition.deleted_at.is_(None))
     if region:
@@ -116,8 +119,9 @@ async def delete_tradition(
     db: Annotated[AsyncSession, Depends(get_db)],
     _: Annotated[object, Depends(get_current_user)],
 ):
+    from datetime import datetime
+
     from app.models.tradition import MusicalTradition as Tradition
-    from datetime import datetime, timezone
 
     stmt = select(Tradition).where(
         Tradition.id == tradition_id,
@@ -127,6 +131,6 @@ async def delete_tradition(
     if tradition is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tradition not found")
 
-    tradition.deleted_at = datetime.now(timezone.utc)
+    tradition.deleted_at = datetime.now(UTC)
     await db.flush()
     logger.info("delete_tradition", id=str(tradition_id))

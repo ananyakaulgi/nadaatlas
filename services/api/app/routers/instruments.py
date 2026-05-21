@@ -1,3 +1,4 @@
+from datetime import UTC
 from typing import Annotated
 from uuid import UUID
 
@@ -106,8 +107,9 @@ async def delete_instrument(
     db: Annotated[AsyncSession, Depends(get_db)],
     _: Annotated[object, Depends(get_current_user)],
 ):
+    from datetime import datetime
+
     from app.models.instrument import Instrument
-    from datetime import datetime, timezone
 
     stmt = select(Instrument).where(
         Instrument.id == instrument_id,
@@ -117,6 +119,6 @@ async def delete_instrument(
     if instrument is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Instrument not found")
 
-    instrument.deleted_at = datetime.now(timezone.utc)
+    instrument.deleted_at = datetime.now(UTC)
     await db.flush()
     logger.info("delete_instrument", id=str(instrument_id))

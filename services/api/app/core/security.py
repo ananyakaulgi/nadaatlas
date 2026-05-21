@@ -7,14 +7,14 @@ from __future__ import annotations
 import random
 import string
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import pyotp
 import structlog
+from fastapi import HTTPException, status
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from fastapi import HTTPException, status
 
 from app.core.config import get_settings
 
@@ -81,7 +81,7 @@ def create_access_token(
     Returns:
         Compact serialised JWT string.
     """
-    now = datetime.now(tz=timezone.utc)
+    now = datetime.now(tz=UTC)
     expire = now + timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
     payload: dict = {
         "sub": subject,
@@ -108,7 +108,7 @@ def create_refresh_token(subject: str) -> str:
     Returns:
         Compact serialised JWT string.
     """
-    now = datetime.now(tz=timezone.utc)
+    now = datetime.now(tz=UTC)
     expire = now + timedelta(days=settings.JWT_REFRESH_TOKEN_EXPIRE_DAYS)
     payload: dict = {
         "sub": subject,

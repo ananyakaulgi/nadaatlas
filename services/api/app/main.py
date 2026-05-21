@@ -5,17 +5,16 @@ from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from redis.asyncio import Redis
-from sqlalchemy.exc import IntegrityError
-
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
+from sqlalchemy.exc import IntegrityError
 
 from app.core.config import get_settings
 from app.core.database import init_db
 from app.core.logging import configure_logging, get_logger, request_id_var
 from app.core.middleware import AuditLogMiddleware, SecurityHeadersMiddleware
 from app.core.rate_limiter import limiter
-from app.routers import health, traditions, instruments, artists, albums, tracks
+from app.routers import albums, artists, health, instruments, tracks, traditions
 
 settings = get_settings()
 logger = get_logger(__name__)

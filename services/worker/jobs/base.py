@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import abc
 import uuid
-from typing import Any, Callable
+from typing import Any
 
 import structlog
 from sqlalchemy import text

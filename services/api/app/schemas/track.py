@@ -3,8 +3,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict
 
-from app.schemas.artist import ArtistSummary
 from app.schemas.album import AlbumSummary
+from app.schemas.artist import ArtistSummary
 
 
 class TrackBase(BaseModel):

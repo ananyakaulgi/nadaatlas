@@ -10,7 +10,7 @@ Endpoints:
   POST /totp/disable    Disable TOTP (requires current password)
   POST /change-password Change password (requires current password)
 """
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Annotated
 from uuid import UUID
 
@@ -22,6 +22,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.auth import get_current_user, get_redis
+from app.core.config import get_settings
 from app.core.database import get_db
 from app.core.rate_limiter import limiter
 from app.core.security import (
@@ -33,7 +34,6 @@ from app.core.security import (
     get_totp_uri,
     hash_backup_code,
     hash_password,
-    verify_backup_code,
     verify_password,
     verify_totp,
 )
@@ -42,12 +42,11 @@ from app.schemas.auth import (
     ChangePasswordRequest,
     LoginRequest,
     RefreshRequest,
+    TokenResponse,
     TOTPSetupResponse,
     TOTPVerifyRequest,
-    TokenResponse,
     UserResponse,
 )
-from app.core.config import get_settings
 
 logger = structlog.get_logger(__name__)
 settings = get_settings()
@@ -72,8 +71,8 @@ async def _get_user_by_email(db: AsyncSession, email: str) -> User | None:
 
 def _check_account_locked(user: User) -> None:
     """Raise 401 if the account is currently locked out."""
-    if user.locked_until and user.locked_until > datetime.now(tz=timezone.utc):
-        unlock_in = int((user.locked_until - datetime.now(tz=timezone.utc)).total_seconds())
+    if user.locked_until and user.locked_until > datetime.now(tz=UTC):
+        unlock_in = int((user.locked_until - datetime.now(tz=UTC)).total_seconds())
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"Account temporarily locked. Try again in {unlock_in} seconds.",
@@ -83,7 +82,7 @@ def _check_account_locked(user: User) -> None:
 async def _record_failed_attempt(db: AsyncSession, user: User) -> None:
     user.failed_login_attempts += 1
     if user.failed_login_attempts >= _MAX_FAILED_ATTEMPTS:
-        user.locked_until = datetime.now(tz=timezone.utc) + timedelta(minutes=_LOCKOUT_MINUTES)
+        user.locked_until = datetime.now(tz=UTC) + timedelta(minutes=_LOCKOUT_MINUTES)
         logger.warning(
             "account_locked",
             user_id=str(user.id),
@@ -95,7 +94,7 @@ async def _record_failed_attempt(db: AsyncSession, user: User) -> None:
 async def _reset_login_state(db: AsyncSession, user: User) -> None:
     user.failed_login_attempts = 0
     user.locked_until = None
-    user.last_login = datetime.now(tz=timezone.utc)
+    user.last_login = datetime.now(tz=UTC)
     await db.commit()
 
 
@@ -246,7 +245,7 @@ async def refresh_token(
 
     # Rotate: blacklist old refresh jti, issue new pair
     _exp = payload.get("exp", 0)
-    _now = datetime.now(tz=timezone.utc).timestamp()
+    _now = datetime.now(tz=UTC).timestamp()
     ttl = max(int(_exp - _now), 1)
     await redis_client.setex(f"blacklist:{jti}", ttl, "1")
 
@@ -275,7 +274,7 @@ async def logout(
     payload = decode_token(raw_token)
     jti: str = payload.get("jti", "")
     exp: int = payload.get("exp", 0)
-    ttl = max(int(exp - datetime.now(tz=timezone.utc).timestamp()), 1)
+    ttl = max(int(exp - datetime.now(tz=UTC).timestamp()), 1)
 
     await redis_client.setex(f"blacklist:{jti}", ttl, "1")
     logger.info("user_logout", user_id=str(current_user.id), jti=jti)

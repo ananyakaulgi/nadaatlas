@@ -47,7 +47,7 @@ const FEATURE_CARDS = [
 
 export default async function HomePage() {
   let traditions: Awaited<ReturnType<typeof getTraditions>>['items'] = []
-  let regions: Record<string, number> = {}
+  const regions: Record<string, number> = {}
 
   try {
     const result = await getTraditions({ limit: 100 })

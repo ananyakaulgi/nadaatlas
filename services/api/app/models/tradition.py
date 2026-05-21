@@ -8,8 +8,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base, SoftDeleteMixin, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
-    from .artist import Artist
     from .album import Album
+    from .artist import Artist
     from .instrument import Instrument
     from .track import Track
 

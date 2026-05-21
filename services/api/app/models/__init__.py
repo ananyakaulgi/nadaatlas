@@ -1,11 +1,11 @@
-from .base import Base, SoftDeleteMixin, TimestampMixin, UUIDMixin
-from .tradition import MusicalTradition
-from .instrument import Instrument
-from .artist import Artist
 from .album import Album
-from .track import Track
+from .artist import Artist
 from .artist_instrument import ArtistInstrument
+from .base import Base, SoftDeleteMixin, TimestampMixin, UUIDMixin
+from .instrument import Instrument
 from .tag import ArtistTag, Tag
+from .track import Track
+from .tradition import MusicalTradition
 from .user import User, UserBackupCode
 
 __all__ = [

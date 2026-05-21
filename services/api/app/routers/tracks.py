@@ -1,3 +1,4 @@
+from datetime import UTC
 from typing import Annotated
 from uuid import UUID
 
@@ -108,8 +109,9 @@ async def delete_track(
     db: Annotated[AsyncSession, Depends(get_db)],
     _: Annotated[object, Depends(get_current_user)],
 ):
+    from datetime import datetime
+
     from app.models.track import Track
-    from datetime import datetime, timezone
 
     stmt = select(Track).where(
         Track.id == track_id,
@@ -119,6 +121,6 @@ async def delete_track(
     if track is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Track not found")
 
-    track.deleted_at = datetime.now(timezone.utc)
+    track.deleted_at = datetime.now(UTC)
     await db.flush()
     logger.info("delete_track", id=str(track_id))
