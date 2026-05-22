@@ -25,7 +25,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="group flex items-center gap-1">
             <span className="font-display text-2xl tracking-wide leading-none">
-              <span className="text-[#f59e0b] group-hover:text-[#fbbf24] transition-colors drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">नाद</span>
+              <span className="text-[#f59e0b] group-hover:text-[#fbbf24] transition-colors drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">♪ नाद</span>
               <span className="text-[#f5f0ff] group-hover:text-[#c4b5fd] transition-colors"> Atla𝄞</span>
             </span>
           </Link>
