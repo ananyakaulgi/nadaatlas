@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { href: '/albums', label: 'Albums' },
   { href: '/instruments', label: 'Instruments' },
   { href: '/regions', label: 'Regions' },
+  { href: '/about', label: 'About' },
 ]
 
 export default function Header() {

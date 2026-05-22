@@ -24,6 +24,7 @@ export default function Footer() {
               { href: '/instruments', label: 'Instruments' },
               { href: '/regions', label: 'Regions' },
               { href: '/genres', label: 'Genres' },
+              { href: '/about', label: 'About' },
             ].map((link) => (
               <Link
                 key={link.href}
