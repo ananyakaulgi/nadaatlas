@@ -37,9 +37,12 @@ export default function Footer() {
           </nav>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-[rgba(124,58,237,0.15)] text-center">
+        <div className="mt-8 pt-6 border-t border-[rgba(124,58,237,0.15)] text-center space-y-1">
           <p className="text-xs text-[#6b5d8a]">
             नाद Atla𝄞 · Your complete encyclopedia for musical research
+          </p>
+          <p className="text-xs text-[#4a3f6b]">
+            © 2026 Origins Of The Soul. All rights reserved.
           </p>
         </div>
       </div>
