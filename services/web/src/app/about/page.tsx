@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Music2, Users, Disc3, Piano, Globe2, BookOpen, Search, ExternalLink } from 'lucide-react'
+import { Music2, Users, Disc3, Piano, Globe2, BookOpen, Search, ExternalLink, Heart } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'About',
-  description: 'नाद Atla𝄞 is your complete encyclopedia for musical research — discover traditions, artists, albums, and instruments from every corner of the world.',
+  title: 'About — नाद Atla𝄞',
+  description: 'One platform where the threads connect — why नाद Atla𝄞 was built and where it is going.',
 }
 
 const PILLARS = [
@@ -72,6 +72,50 @@ export default function AboutPage() {
           the primordial vibration from which all music flows. An Atlas maps the world.
           Together, नाद Atla𝄞 maps the world of sound.
         </p>
+      </div>
+
+      {/* ── Why This Exists ── */}
+      <div className="mb-16">
+        <div className="flex items-center gap-3 mb-8">
+          <Heart className="w-5 h-5 text-[#f59e0b]" />
+          <h2 className="font-display text-3xl text-[#f5f0ff]">Why This Exists</h2>
+        </div>
+        <div
+          className="rounded-2xl p-10"
+          style={{
+            background: 'rgba(20,14,40,0.7)',
+            border: '1px solid rgba(245,158,11,0.2)',
+            backdropFilter: 'blur(12px)',
+          }}
+        >
+          <div className="space-y-5 text-[#a89fc4] leading-relaxed text-lg">
+            <p>
+              If you love music deeply enough, you eventually hit a wall. You&apos;re listening to a
+              raga and want to know its history. You read about a composer and want to hear their
+              work. You discover a tradition and want to find its great artists. The information
+              exists — but it&apos;s scattered across Wikipedia pages, streaming platform bios,
+               forum threads, and academic PDFs, with no single thread connecting them.
+            </p>
+            <p>
+              नाद Atla𝄞 is a simple attempt to fix that. One platform where the threads connect —
+              where a raga links to its composers, its recordings, and the tradition it belongs to.
+              Where you can move from curiosity to context to sound without losing the thread.
+            </p>
+            <p className="text-[#f5f0ff]/80">
+              For now, this is a tool for <span className="text-[#c4b5fd]">search and research</span>.
+              Look up a composer, explore a tradition, find out what raga a piece was composed in,
+              or trace an instrument across cultures. When something catches your ear, we point you
+              to where the music actually lives — YouTube, Spotify, Wikipedia — rather than trying
+              to replace those sources.
+            </p>
+            <p>
+              This is version one. The atlas is still being drawn. In time, we want to bring far
+              richer features — deeper connections between pieces, listening contexts, curated
+              journeys through traditions, and more. But every great journey starts with a map,
+              and this is ours.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* ── Mission ── */}
