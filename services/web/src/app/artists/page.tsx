@@ -5,23 +5,35 @@ import type { Metadata } from 'next'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Artists',
+  title: 'Artists — नाद Atla𝄞',
   description: 'Discover artists and musicians from world music traditions',
 }
 
-export default async function ArtistsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ musical_tradition?: string }>
-}) {
-  const { musical_tradition } = await searchParams
-  let artists: Awaited<ReturnType<typeof getArtists>>['items'] = []
+interface PageProps {
+  searchParams: Promise<{
+    search?: string
+    musical_tradition?: string
+    page?: string
+  }>
+}
+
+export default async function ArtistsPage({ searchParams }: PageProps) {
+  const params = await searchParams
+  const page  = Number(params.page || 1)
+  const limit = 40
+  const skip  = (page - 1) * limit
+
+  let result = { items: [], total: 0, skip: 0, limit }
 
   try {
-    const result = await getArtists({ limit: 100 })
-    artists = result.items
+    result = await getArtists({
+      skip,
+      limit,
+      ...(params.search            && { search:            params.search }),
+      ...(params.musical_tradition && { musical_tradition: params.musical_tradition }),
+    })
   } catch (err) {
-    console.error('[ArtistsPage] Failed to fetch:', err)
+    console.error('[ArtistsPage] fetch failed:', err)
   }
 
   return (
@@ -33,18 +45,14 @@ export default async function ArtistsPage({
         </p>
       </div>
 
-      {artists.length === 0 ? (
-        <div className="text-center py-20">
-          <div className="bg-[rgba(20,14,40,0.7)] rounded-2xl p-12 border border-[rgba(124,58,237,0.2)] inline-block">
-            <p className="font-display text-xl text-[#c4b5fd] mb-2">No artists yet</p>
-            <p className="text-sm text-[#a89fc4]">
-              The artist catalog is being assembled. Check back soon, or ensure the API is running.
-            </p>
-          </div>
-        </div>
-      ) : (
-        <ArtistsClient artists={artists} initialTradition={musical_tradition} />
-      )}
+      <ArtistsClient
+        initialItems={result.items}
+        total={result.total}
+        page={page}
+        limit={limit}
+        initialSearch={params.search || ''}
+        initialTradition={params.musical_tradition || ''}
+      />
     </div>
   )
 }

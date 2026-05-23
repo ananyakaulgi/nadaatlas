@@ -1,75 +1,77 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
+import { useCallback } from 'react'
 import type { Artist } from '@/lib/types'
 import ArtistCard from '@/components/cards/ArtistCard'
 import SearchInput from '@/components/ui/SearchInput'
-import Pagination from '@/components/ui/Pagination'
-
-const PAGE_SIZE = 20
 
 interface Props {
-  artists: Artist[]
-  initialTradition?: string
+  initialItems: Artist[]
+  total: number
+  page: number
+  limit: number
+  initialSearch: string
+  initialTradition: string
 }
 
-export default function ArtistsClient({ artists, initialTradition }: Props) {
-  const [search, setSearch] = useState('')
-  const [tradition, setTradition] = useState(initialTradition || '')
-  const [page, setPage] = useState(1)
+export default function ArtistsClient({
+  initialItems, total, page, limit,
+  initialSearch, initialTradition,
+}: Props) {
+  const router   = useRouter()
+  const pathname = usePathname()
+  const sp       = useSearchParams()
 
-  const traditions = useMemo(() => {
-    const set = new Set(artists.map((a) => a.musical_tradition).filter(Boolean) as string[])
-    return Array.from(set).sort()
-  }, [artists])
+  const push = useCallback((updates: Record<string, string>) => {
+    const p = new URLSearchParams(sp.toString())
+    Object.entries(updates).forEach(([k, v]) => v ? p.set(k, v) : p.delete(k))
+    p.delete('page')
+    router.push(`${pathname}?${p.toString()}`)
+  }, [router, pathname, sp])
 
-  const filtered = useMemo(() => {
-    return artists.filter((a) => {
-      const matchesSearch = !search || a.name.toLowerCase().includes(search.toLowerCase())
-      const matchesTradition = !tradition || a.musical_tradition === tradition
-      return matchesSearch && matchesTradition
-    })
-  }, [artists, search, tradition])
+  const pushPage = useCallback((p: number) => {
+    const params = new URLSearchParams(sp.toString())
+    params.set('page', String(p))
+    router.push(`${pathname}?${params.toString()}`)
+  }, [router, pathname, sp])
 
-  const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
-  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
-
-  const handleSearch = (v: string) => { setSearch(v); setPage(1) }
-  const handleTradition = (v: string) => { setTradition(v); setPage(1) }
+  const totalPages = Math.ceil(total / limit)
 
   return (
     <div>
-      <div className="flex flex-col sm:flex-row gap-3 mb-8">
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <SearchInput
-          value={search}
-          onChange={handleSearch}
-          placeholder="Search artists..."
+          value={initialSearch}
+          onChange={(v) => push({ search: v })}
+          placeholder="Search artists…"
           className="flex-1"
         />
-        <select
-          value={tradition}
-          onChange={(e) => handleTradition(e.target.value)}
-          className="px-4 py-2.5 rounded-xl text-sm text-[#f5f0ff] focus:outline-none transition-all min-w-[180px]"
-          style={{ background: 'rgba(20,14,40,0.7)', border: '1px solid rgba(124,58,237,0.25)', backdropFilter: 'blur(12px)' }}
-        >
-          <option value="">All traditions</option>
-          {traditions.map((t) => (
-            <option key={t} value={t}>{t}</option>
-          ))}
-        </select>
+        <SearchInput
+          value={initialTradition}
+          onChange={(v) => push({ musical_tradition: v })}
+          placeholder="Filter by tradition…"
+          className="sm:w-64"
+        />
       </div>
 
-      <p className="text-sm text-[#6b5d8a] mb-6">
-        {filtered.length} {filtered.length === 1 ? 'artist' : 'artists'}
-        {tradition ? ` in ${tradition}` : ''}
-        {search ? ` matching "${search}"` : ''}
-      </p>
+      {/* Stats */}
+      <div className="flex items-center justify-between mb-8">
+        <p className="text-sm text-[#6b5d8a]">
+          <span className="text-[#c4b5fd] font-medium">{total.toLocaleString()}</span> artists
+          {initialTradition && ` · ${initialTradition}`}
+          {initialSearch && ` matching "${initialSearch}"`}
+        </p>
+        {totalPages > 1 && (
+          <p className="text-xs text-[#6b5d8a]">Page {page} of {totalPages}</p>
+        )}
+      </div>
 
-      {paginated.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {paginated.map((a) => (
-            <ArtistCard key={a.id} artist={a} />
-          ))}
+      {/* Grid */}
+      {initialItems.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+          {initialItems.map((a) => <ArtistCard key={a.id} artist={a} />)}
         </div>
       ) : (
         <div className="text-center py-16">
@@ -78,7 +80,28 @@ export default function ArtistsClient({ artists, initialTradition }: Props) {
         </div>
       )}
 
-      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center gap-2">
+          <button
+            onClick={() => pushPage(page - 1)}
+            disabled={page <= 1}
+            className="px-4 py-2 rounded-xl text-sm text-[#a89fc4] disabled:opacity-30 hover:text-[#f5f0ff] hover:bg-[rgba(124,58,237,0.15)] transition-all"
+            style={{ border: '1px solid rgba(124,58,237,0.2)' }}
+          >
+            ← Prev
+          </button>
+          <span className="px-4 py-2 text-sm text-[#6b5d8a]">{page} / {totalPages}</span>
+          <button
+            onClick={() => pushPage(page + 1)}
+            disabled={page >= totalPages}
+            className="px-4 py-2 rounded-xl text-sm text-[#a89fc4] disabled:opacity-30 hover:text-[#f5f0ff] hover:bg-[rgba(124,58,237,0.15)] transition-all"
+            style={{ border: '1px solid rgba(124,58,237,0.2)' }}
+          >
+            Next →
+          </button>
+        </div>
+      )}
     </div>
   )
 }

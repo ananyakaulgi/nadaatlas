@@ -38,11 +38,13 @@ export async function getArtists(params?: {
   skip?: number
   limit?: number
   musical_tradition?: string
+  search?: string
 }): Promise<PaginatedResponse<Artist>> {
   const qs = new URLSearchParams()
   if (params?.skip !== undefined) qs.set('skip', String(params.skip))
   if (params?.limit !== undefined) qs.set('limit', String(params.limit))
   if (params?.musical_tradition) qs.set('musical_tradition', params.musical_tradition)
+  if (params?.search) qs.set('search', params.search)
   const query = qs.toString() ? `?${qs.toString()}` : ''
   return fetchAPI(`/api/v1/artists/${query}`)
 }

@@ -53,16 +53,22 @@ async def list_artists(
     musical_tradition: str | None = Query(default=None),
     nationality: str | None = Query(default=None),
     tradition_id: UUID | None = Query(default=None),
+    search: str | None = Query(default=None),
 ):
     from app.models.artist import Artist
 
     stmt = select(Artist).where(Artist.deleted_at.is_(None))
+    if search:
+        pattern = f"%{search}%"
+        stmt = stmt.where(or_(Artist.name.ilike(pattern), Artist.name_native.ilike(pattern)))
     if musical_tradition:
-        stmt = stmt.where(Artist.musical_tradition == musical_tradition)
+        stmt = stmt.where(Artist.musical_tradition.ilike(f"%{musical_tradition}%"))
     if nationality:
         stmt = stmt.where(Artist.nationality == nationality)
     if tradition_id:
         stmt = stmt.where(Artist.tradition_id == tradition_id)
+
+    stmt = stmt.order_by(Artist.name)
 
     total = (await db.execute(select(func.count()).select_from(stmt.subquery()))).scalar_one()
     rows = (await db.execute(stmt.offset(pagination.skip).limit(pagination.limit))).scalars().all()
