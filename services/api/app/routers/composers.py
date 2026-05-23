@@ -5,6 +5,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
 from app.core.dependencies import get_current_user, get_pagination
@@ -45,7 +46,13 @@ async def list_composers(
     stmt = stmt.order_by(Composer.name_sort.nulls_last(), Composer.name)
 
     total = (await db.execute(select(func.count()).select_from(stmt.subquery()))).scalar_one()
-    rows = (await db.execute(stmt.offset(pagination.skip).limit(pagination.limit))).scalars().all()
+    rows = (
+        await db.execute(
+            stmt.options(selectinload(Composer.tradition))
+            .offset(pagination.skip)
+            .limit(pagination.limit)
+        )
+    ).scalars().all()
 
     return PaginatedResponse(items=rows, total=total, skip=pagination.skip, limit=pagination.limit)
 
@@ -79,9 +86,9 @@ async def get_composer(
 
     composer = (
         await db.execute(
-            select(Composer).where(
-                Composer.id == composer_id, Composer.deleted_at.is_(None)
-            )
+            select(Composer)
+            .where(Composer.id == composer_id, Composer.deleted_at.is_(None))
+            .options(selectinload(Composer.tradition))
         )
     ).scalar_one_or_none()
     if composer is None:

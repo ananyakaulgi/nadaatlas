@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict
@@ -12,8 +12,8 @@ class ComposerBase(BaseModel):
     name_sort: str | None = None
     tradition_id: UUID | None = None
     era: str | None = None
-    born: int | None = None
-    died: int | None = None
+    born: date | None = None
+    died: date | None = None
     birth_place: str | None = None
     nationality: str | None = None
     biography_short: str | None = None
@@ -36,8 +36,8 @@ class ComposerUpdate(BaseModel):
     name_sort: str | None = None
     tradition_id: UUID | None = None
     era: str | None = None
-    born: int | None = None
-    died: int | None = None
+    born: date | None = None
+    died: date | None = None
     birth_place: str | None = None
     nationality: str | None = None
     biography: str | None = None
