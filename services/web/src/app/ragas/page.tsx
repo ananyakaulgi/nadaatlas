@@ -1,6 +1,7 @@
 import { getRagas } from '@/lib/api'
 import RagasClient from './RagasClient'
 import type { Metadata } from 'next'
+import type { Raga } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,7 +28,7 @@ export default async function RagasPage({ searchParams }: PageProps) {
   const limit     = 60
   const skip      = (page - 1) * limit
 
-  let result = { items: [], total: 0, skip: 0, limit }
+  let result: { items: Raga[]; total: number; skip: number; limit: number } = { items: [], total: 0, skip: 0, limit }
 
   try {
     result = await getRagas({

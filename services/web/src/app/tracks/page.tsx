@@ -1,6 +1,7 @@
 import { getTracks } from '@/lib/api'
 import TracksClient from './TracksClient'
 import type { Metadata } from 'next'
+import type { Track } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,7 +24,7 @@ export default async function TracksPage({ searchParams }: PageProps) {
   const limit = 40
   const skip  = (page - 1) * limit
 
-  let result = { items: [], total: 0, skip: 0, limit }
+  let result: { items: Track[]; total: number; skip: number; limit: number } = { items: [], total: 0, skip: 0, limit }
 
   try {
     result = await getTracks({

@@ -1,6 +1,7 @@
 import { getArtists } from '@/lib/api'
 import ArtistsClient from './ArtistsClient'
 import type { Metadata } from 'next'
+import type { Artist } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,7 +24,7 @@ export default async function ArtistsPage({ searchParams }: PageProps) {
   const limit = 40
   const skip  = (page - 1) * limit
 
-  let result = { items: [], total: 0, skip: 0, limit }
+  let result: { items: Artist[]; total: number; skip: number; limit: number } = { items: [], total: 0, skip: 0, limit }
 
   try {
     result = await getArtists({

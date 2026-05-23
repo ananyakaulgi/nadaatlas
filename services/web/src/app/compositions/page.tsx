@@ -1,6 +1,7 @@
 import { getCompositions } from '@/lib/api'
 import CompositionsClient from './CompositionsClient'
 import type { Metadata } from 'next'
+import type { Composition } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -47,7 +48,7 @@ export default async function CompositionsPage({ searchParams }: PageProps) {
   const limit  = 40
   const skip   = (page - 1) * limit
 
-  let result = { items: [], total: 0, skip: 0, limit }
+  let result: { items: Composition[]; total: number; skip: number; limit: number } = { items: [], total: 0, skip: 0, limit }
 
   try {
     result = await getCompositions({
