@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from uuid import UUID
 
 from pgvector.sqlalchemy import Vector
-from sqlalchemy import ForeignKey, Integer, String, Text
+from sqlalchemy import ForeignKey, Integer, String, Text  # noqa: F401
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base, SoftDeleteMixin, TimestampMixin, UUIDMixin
@@ -12,6 +12,8 @@ from .base import Base, SoftDeleteMixin, TimestampMixin, UUIDMixin
 if TYPE_CHECKING:
     from .album import Album
     from .artist import Artist
+    from .raga import Raga
+    from .tala import Tala
     from .tradition import MusicalTradition
 
 
@@ -38,6 +40,15 @@ class Track(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
         ForeignKey("musical_traditions.id", ondelete="SET NULL"),
         nullable=True,
     )
+    raga_id: Mapped[UUID | None] = mapped_column(
+        ForeignKey("ragas.id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    tala_id: Mapped[UUID | None] = mapped_column(
+        ForeignKey("talas.id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    # Free-text fallback — kept until ragas/talas tables are seeded and backfilled
     raga: Mapped[str | None] = mapped_column(String(255), nullable=True)
     tala: Mapped[str | None] = mapped_column(String(255), nullable=True)
     maqam: Mapped[str | None] = mapped_column(String(255), nullable=True)
@@ -57,4 +68,10 @@ class Track(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
     )
     tradition: Mapped[MusicalTradition | None] = relationship(
         "MusicalTradition", back_populates="tracks", foreign_keys=[tradition_id]
+    )
+    raga_obj: Mapped[Raga | None] = relationship(
+        "Raga", back_populates="tracks", foreign_keys=[raga_id]
+    )
+    tala_obj: Mapped[Tala | None] = relationship(
+        "Tala", back_populates="tracks", foreign_keys=[tala_id]
     )

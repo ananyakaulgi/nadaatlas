@@ -78,6 +78,17 @@ class User(UUIDMixin, TimestampMixin, Base):
         cascade="all, delete-orphan",
         lazy="select",
     )
+    sessions: Mapped[list] = relationship(
+        "UserSession",
+        back_populates="user",
+        cascade="all, delete-orphan",
+        lazy="select",
+    )
+    login_audit: Mapped[list] = relationship(
+        "LoginAudit",
+        back_populates="user",
+        lazy="select",
+    )
 
     def __repr__(self) -> str:
         return f"<User id={self.id} email={self.email!r}>"

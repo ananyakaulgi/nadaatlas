@@ -14,7 +14,20 @@ from app.core.database import init_db
 from app.core.logging import configure_logging, get_logger, request_id_var
 from app.core.middleware import AuditLogMiddleware, SecurityHeadersMiddleware
 from app.core.rate_limiter import limiter
-from app.routers import albums, artists, health, instruments, tracks, traditions
+from app.routers import (
+    albums,
+    artists,
+    composers,
+    compositions,
+    genres,
+    health,
+    instruments,
+    ragas,
+    regions,
+    talas,
+    tracks,
+    traditions,
+)
 
 settings = get_settings()
 logger = get_logger(__name__)
@@ -101,10 +114,16 @@ async def request_id_middleware(request: Request, call_next) -> Response:
 # ---------------------------------------------------------------------------
 app.include_router(health.router)
 app.include_router(traditions.router)
+app.include_router(regions.router)
+app.include_router(genres.router)
 app.include_router(instruments.router)
 app.include_router(artists.router)
 app.include_router(albums.router)
 app.include_router(tracks.router)
+app.include_router(ragas.router)
+app.include_router(talas.router)
+app.include_router(composers.router)
+app.include_router(compositions.router)
 
 # Auth router — added by the security agent; skip gracefully if not yet present
 try:

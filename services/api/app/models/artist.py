@@ -13,6 +13,7 @@ from .base import Base, SoftDeleteMixin, TimestampMixin, UUIDMixin
 if TYPE_CHECKING:
     from .album import Album
     from .artist_instrument import ArtistInstrument
+    from .genre import ArtistGenre
     from .instrument import Instrument
     from .tag import ArtistTag
     from .track import Track
@@ -76,4 +77,7 @@ class Artist(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
     )
     artist_tags: Mapped[list[ArtistTag]] = relationship(
         "ArtistTag", back_populates="artist"
+    )
+    artist_genres: Mapped[list[ArtistGenre]] = relationship(
+        "ArtistGenre", back_populates="artist"
     )

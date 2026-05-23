@@ -20,6 +20,8 @@ class Instrument(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
 
     name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     name_native: Mapped[str | None] = mapped_column(String(512), nullable=True)
+    # Plain listener-facing family: Stringed, Wind, Brass, Percussion, Keyboard, Electronic
+    instrument_family: Mapped[str | None] = mapped_column(String(64), nullable=True)
     hornbostel_sachs: Mapped[str | None] = mapped_column(String(64), nullable=True)
     hs_category: Mapped[str | None] = mapped_column(String(64), nullable=True)
     tradition_id: Mapped[UUID | None] = mapped_column(
