@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { href: '/talas',      label: 'Talas' },
   { href: '/composers',    label: 'Composers' },
   { href: '/compositions', label: 'Compositions' },
+  { href: '/tracks',       label: 'Tracks' },
   { href: '/artists',      label: 'Artists' },
   { href: '/instruments',label: 'Instruments' },
   { href: '/genres',     label: 'Genres' },

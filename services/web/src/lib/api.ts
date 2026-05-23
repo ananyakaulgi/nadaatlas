@@ -1,6 +1,6 @@
 import type {
   Tradition, Artist, Album, Instrument,
-  Raga, Tala, Composer, Composition, Region, Genre,
+  Raga, Tala, Composer, Composition, Region, Genre, Track,
   PaginatedResponse,
 } from './types'
 
@@ -195,6 +195,32 @@ export async function getCompositions(params?: {
 
 export async function getComposition(id: string): Promise<Composition> {
   return fetchAPI(`/api/v1/compositions/${id}`)
+}
+
+// Tracks
+export async function getTracks(params?: {
+  skip?: number
+  limit?: number
+  artist_id?: string
+  album_id?: string
+  musical_tradition?: string
+  raga?: string
+  search?: string
+}): Promise<PaginatedResponse<Track>> {
+  const qs = new URLSearchParams()
+  if (params?.skip !== undefined) qs.set('skip', String(params.skip))
+  if (params?.limit !== undefined) qs.set('limit', String(params.limit))
+  if (params?.artist_id) qs.set('artist_id', params.artist_id)
+  if (params?.album_id) qs.set('album_id', params.album_id)
+  if (params?.musical_tradition) qs.set('musical_tradition', params.musical_tradition)
+  if (params?.raga) qs.set('raga', params.raga)
+  if (params?.search) qs.set('search', params.search)
+  const query = qs.toString() ? `?${qs.toString()}` : ''
+  return fetchAPI(`/api/v1/tracks/${query}`)
+}
+
+export async function getTrack(id: string): Promise<Track> {
+  return fetchAPI(`/api/v1/tracks/${id}`)
 }
 
 // Genres

@@ -28,8 +28,14 @@ export default async function ComposersPage() {
   }
 
   const TRADITION_ORDER = [
-    'Carnatic', 'Hindustani', 'Persian Classical',
-    'Arabic Music', 'Turkish Classical', 'Griot Music', 'Other',
+    'Western Classical',
+    'Jazz',
+    'Carnatic Classical', 'Hindustani Classical',
+    'Tango', 'Flamenco', 'Afrobeat', 'Blues',
+    'Persian Classical', 'Maqam (Arabic)', 'Turkish Classical',
+    'Griot', 'Griot Music',
+    'Qawwali',
+    'Other',
   ]
   const orderedGroups = TRADITION_ORDER
     .filter((t) => byTradition[t])

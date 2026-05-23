@@ -4,7 +4,7 @@ import { getTraditions } from '@/lib/api'
 export const dynamic = 'force-dynamic'
 import TraditionCard from '@/components/cards/TraditionCard'
 import RegionCard from '@/components/cards/RegionCard'
-import { Music2, Users, Disc3, Piano, BookOpen, Clock, PenTool, Scroll } from 'lucide-react'
+import { Music2, Users, Disc3, Piano, BookOpen, Clock, PenTool, Scroll, Headphones } from 'lucide-react'
 
 const FEATURE_CARDS = [
   {
@@ -51,6 +51,15 @@ const FEATURE_CARDS = [
     glow: 'rgba(16,185,129,0.18)',
     iconColor: 'text-[#34d399]',
     borderColor: 'rgba(16,185,129,0.25)',
+  },
+  {
+    href: '/tracks',
+    icon: Headphones,
+    title: 'Tracks',
+    description: 'Recordings from studio sessions and live concerts across every tradition',
+    glow: 'rgba(239,68,68,0.15)',
+    iconColor: 'text-[#fca5a5]',
+    borderColor: 'rgba(239,68,68,0.22)',
   },
   {
     href: '/artists',

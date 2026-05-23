@@ -29,6 +29,21 @@ export interface Artist {
   is_verified: boolean
 }
 
+export interface ArtistSummary {
+  id: string
+  name: string
+  name_native: string | null
+  musical_tradition: string | null
+  image_url: string | null
+}
+
+export interface AlbumSummary {
+  id: string
+  title: string
+  release_date: string | null
+  cover_image_url: string | null
+}
+
 export interface AlbumArtist {
   id: number
   name: string
@@ -62,6 +77,24 @@ export interface Instrument {
   image_url: string | null
   tradition: Tradition | null
   wikipedia_slug: string | null
+}
+
+export interface Track {
+  id: string
+  title: string
+  title_native: string | null
+  duration_seconds: number | null
+  track_number: number | null
+  musical_tradition: string | null
+  raga: string | null
+  tala: string | null
+  maqam: string | null
+  youtube_url: string | null
+  spotify_url: string | null
+  artist: ArtistSummary
+  album: AlbumSummary | null
+  created_at: string
+  updated_at: string
 }
 
 export interface PaginatedResponse<T> {

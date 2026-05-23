@@ -5,6 +5,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
 from app.core.dependencies import get_current_user, get_pagination
@@ -24,6 +25,7 @@ async def list_tracks(
     album_id: UUID | None = Query(default=None),
     musical_tradition: str | None = Query(default=None),
     raga: str | None = Query(default=None),
+    search: str | None = Query(default=None),
 ):
     from app.models.track import Track
 
@@ -33,12 +35,22 @@ async def list_tracks(
     if album_id:
         stmt = stmt.where(Track.album_id == album_id)
     if musical_tradition:
-        stmt = stmt.where(Track.musical_tradition == musical_tradition)
+        stmt = stmt.where(Track.musical_tradition.ilike(f"%{musical_tradition}%"))
     if raga:
-        stmt = stmt.where(Track.raga == raga)
+        stmt = stmt.where(Track.raga.ilike(f"%{raga}%"))
+    if search:
+        stmt = stmt.where(Track.title.ilike(f"%{search}%"))
 
     total = (await db.execute(select(func.count()).select_from(stmt.subquery()))).scalar_one()
-    rows = (await db.execute(stmt.offset(pagination.skip).limit(pagination.limit))).scalars().all()
+    rows = (
+        await db.execute(
+            stmt
+            .options(selectinload(Track.artist), selectinload(Track.album))
+            .offset(pagination.skip)
+            .limit(pagination.limit)
+            .order_by(Track.created_at.desc())
+        )
+    ).scalars().all()
 
     return PaginatedResponse(
         items=rows, total=total, skip=pagination.skip, limit=pagination.limit
@@ -52,9 +64,10 @@ async def get_track(
 ):
     from app.models.track import Track
 
-    stmt = select(Track).where(
-        Track.id == track_id,
-        Track.deleted_at.is_(None),
+    stmt = (
+        select(Track)
+        .where(Track.id == track_id, Track.deleted_at.is_(None))
+        .options(selectinload(Track.artist), selectinload(Track.album))
     )
     track = (await db.execute(stmt)).scalar_one_or_none()
     if track is None:
