@@ -137,6 +137,31 @@ export interface TraditionSummary {
   region: string
 }
 
+export interface RagaSummary {
+  id: string
+  name: string
+  tradition: string
+  that: string | null
+  melakarta_number: number | null
+  arohana: string | null
+}
+
+export interface TalaSummary {
+  id: string
+  name: string
+  tradition: string
+  beats: number | null
+  anga_structure: string | null
+}
+
+export interface ComposerSummary {
+  id: string
+  name: string
+  name_sort: string | null
+  era: string | null
+  nationality: string | null
+}
+
 export interface Composer {
   id: string
   name: string
@@ -157,6 +182,29 @@ export interface Composer {
   image_url: string | null
   website_url: string | null
   is_verified: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface Composition {
+  id: string
+  title: string
+  title_native: string | null
+  composer_id: string | null
+  tradition_id: string | null
+  composition_type: string | null
+  raga_id: string | null
+  tala_id: string | null
+  maqam: string | null
+  language: string | null
+  lyrics: string | null
+  description: string | null
+  year_composed: number | null
+  wikipedia_slug: string | null
+  composer: ComposerSummary | null
+  raga: RagaSummary | null
+  tala: TalaSummary | null
+  tradition: TraditionSummary | null
   created_at: string
   updated_at: string
 }

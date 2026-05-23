@@ -4,7 +4,7 @@ import { getTraditions } from '@/lib/api'
 export const dynamic = 'force-dynamic'
 import TraditionCard from '@/components/cards/TraditionCard'
 import RegionCard from '@/components/cards/RegionCard'
-import { Music2, Users, Disc3, Piano, BookOpen, Clock, PenTool } from 'lucide-react'
+import { Music2, Users, Disc3, Piano, BookOpen, Clock, PenTool, Scroll } from 'lucide-react'
 
 const FEATURE_CARDS = [
   {
@@ -42,6 +42,15 @@ const FEATURE_CARDS = [
     glow: 'rgba(236,72,153,0.18)',
     iconColor: 'text-[#f472b6]',
     borderColor: 'rgba(236,72,153,0.25)',
+  },
+  {
+    href: '/compositions',
+    icon: Scroll,
+    title: 'Compositions',
+    description: 'Kritis, dhrupad, khayal, ghazal — the full canon of classical works',
+    glow: 'rgba(16,185,129,0.18)',
+    iconColor: 'text-[#34d399]',
+    borderColor: 'rgba(16,185,129,0.25)',
   },
   {
     href: '/artists',
