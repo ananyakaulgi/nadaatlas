@@ -35,7 +35,7 @@ export default async function TrackDetailPage({ params }: Props) {
           <p className="font-display text-2xl text-[#a89fc4] italic mb-4">{track.title_native}</p>
         )}
         <div className="flex flex-wrap gap-2">
-          {track.musical_tradition && <Badge variant="purple">{track.musical_tradition}</Badge>}
+          {track.musical_tradition && <Badge variant="lavender">{track.musical_tradition}</Badge>}
           {track.raga && <Badge variant="teal">{track.raga}</Badge>}
           {track.tala && <Badge variant="sage">{track.tala}</Badge>}
           {track.maqam && <Badge variant="sage">{track.maqam}</Badge>}
@@ -145,18 +145,6 @@ export default async function TrackDetailPage({ params }: Props) {
         </div>
       )}
 
-      {/* Lyrics */}
-      {track.lyrics && (
-        <div
-          className="rounded-2xl p-6 mb-8"
-          style={{ background: 'rgba(20,14,40,0.65)', border: '1px solid rgba(245,158,11,0.2)', backdropFilter: 'blur(12px)' }}
-        >
-          <h2 className="font-display text-xl text-[#f5f0ff] mb-3">Lyrics</h2>
-          <pre className="text-[#a89fc4] leading-relaxed whitespace-pre-wrap font-sans text-sm">
-            {track.lyrics}
-          </pre>
-        </div>
-      )}
     </div>
   )
 }

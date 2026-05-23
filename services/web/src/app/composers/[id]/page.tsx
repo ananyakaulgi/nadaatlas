@@ -42,7 +42,7 @@ export default async function ComposerDetailPage({ params }: Props) {
             </Badge>
           )}
           {composer.tradition && <Badge variant="teal">{composer.tradition.name}</Badge>}
-          {composer.nationality && <Badge variant="purple">{composer.nationality}</Badge>}
+          {composer.nationality && <Badge variant="lavender">{composer.nationality}</Badge>}
         </div>
       </div>
 

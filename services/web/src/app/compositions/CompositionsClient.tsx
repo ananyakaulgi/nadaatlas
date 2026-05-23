@@ -137,7 +137,7 @@ export default function CompositionsClient({
                       <Badge variant="gold">{c.composer.name}</Badge>
                     )}
                     {c.composition_type && (
-                      <Badge variant="purple" className="capitalize">{c.composition_type}</Badge>
+                      <Badge variant="lavender" className="capitalize">{c.composition_type}</Badge>
                     )}
                     {c.raga && (
                       <Badge variant="teal">{c.raga.name}</Badge>

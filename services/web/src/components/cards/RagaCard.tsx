@@ -5,7 +5,7 @@ import type { Raga } from '@/lib/types'
 const TRADITION_COLORS = {
   hindustani: { border: 'rgba(245,158,11,0.3)', glow: 'rgba(245,158,11,0.12)', badge: 'gold' as const },
   carnatic:   { border: 'rgba(20,184,166,0.3)',  glow: 'rgba(20,184,166,0.1)',  badge: 'teal' as const },
-  both:       { border: 'rgba(124,58,237,0.3)',  glow: 'rgba(124,58,237,0.12)', badge: 'purple' as const },
+  both:       { border: 'rgba(124,58,237,0.3)',  glow: 'rgba(124,58,237,0.12)', badge: 'lavender' as const },
 }
 
 export default function RagaCard({ raga }: { raga: Raga }) {

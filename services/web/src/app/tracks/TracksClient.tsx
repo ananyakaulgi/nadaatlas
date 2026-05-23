@@ -132,7 +132,7 @@ export default function TracksClient({
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     <Badge variant="gold">{t.artist.name}</Badge>
-                    {t.musical_tradition && <Badge variant="purple">{t.musical_tradition}</Badge>}
+                    {t.musical_tradition && <Badge variant="lavender">{t.musical_tradition}</Badge>}
                     {t.raga && <Badge variant="teal">{t.raga}</Badge>}
                     {t.tala && <Badge variant="sage">{t.tala}</Badge>}
                     {t.maqam && <Badge variant="sage">{t.maqam}</Badge>}

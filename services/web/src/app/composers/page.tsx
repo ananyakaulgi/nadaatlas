@@ -1,6 +1,7 @@
 import { getComposers } from '@/lib/api'
 import ComposerCard from '@/components/cards/ComposerCard'
 import type { Metadata } from 'next'
+import type { Composer } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ComposersPage() {
-  let composers = []
+  let composers: Composer[] = []
 
   try {
     const result = await getComposers({ limit: 100 })

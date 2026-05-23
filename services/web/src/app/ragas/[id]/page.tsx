@@ -19,7 +19,7 @@ export default async function RagaDetailPage({ params }: Props) {
   const TRADITION_COLORS = {
     hindustani: { border: 'rgba(245,158,11,0.3)', badge: 'gold' as const },
     carnatic:   { border: 'rgba(20,184,166,0.3)',  badge: 'teal' as const },
-    both:       { border: 'rgba(124,58,237,0.3)',  badge: 'purple' as const },
+    both:       { border: 'rgba(124,58,237,0.3)',  badge: 'lavender' as const },
   }
   const colors = TRADITION_COLORS[raga.tradition as keyof typeof TRADITION_COLORS] ?? TRADITION_COLORS.both
 
@@ -35,7 +35,6 @@ export default async function RagaDetailPage({ params }: Props) {
         <div className="flex flex-wrap items-start gap-3 mb-3">
           <h1 className="font-display text-5xl text-[#f5f0ff]">{raga.name}</h1>
           <Badge variant={colors.badge} className="mt-2 capitalize">{raga.tradition === 'both' ? 'Both traditions' : raga.tradition}</Badge>
-          {raga.is_verified && <span className="text-[#f59e0b] mt-2 text-lg" title="Verified">✦</span>}
         </div>
         {raga.name_native && (
           <p className="font-display text-2xl text-[#a89fc4] italic">{raga.name_native}</p>

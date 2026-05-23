@@ -30,7 +30,7 @@ export default async function CompositionDetailPage({ params }: Props) {
         )}
         <div className="flex flex-wrap gap-2">
           {composition.composition_type && (
-            <Badge variant="purple" className="capitalize">{composition.composition_type}</Badge>
+            <Badge variant="lavender" className="capitalize">{composition.composition_type}</Badge>
           )}
           {composition.language && <Badge variant="sage">{composition.language}</Badge>}
           {composition.year_composed && <Badge variant="gold">{composition.year_composed}</Badge>}

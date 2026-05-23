@@ -1,6 +1,7 @@
 import { getTalas } from '@/lib/api'
 import TalaCard from '@/components/cards/TalaCard'
 import type { Metadata } from 'next'
+import type { Tala } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 export default async function TalasPage() {
-  let hindustani = [], carnatic = []
+  let hindustani: Tala[] = [], carnatic: Tala[] = []
 
   try {
     const [h, c] = await Promise.all([

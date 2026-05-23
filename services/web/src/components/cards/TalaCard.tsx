@@ -5,7 +5,7 @@ import type { Tala } from '@/lib/types'
 const TRADITION_COLORS = {
   hindustani: { border: 'rgba(245,158,11,0.3)', glow: 'rgba(245,158,11,0.12)', badge: 'gold' as const },
   carnatic:   { border: 'rgba(20,184,166,0.3)',  glow: 'rgba(20,184,166,0.1)',  badge: 'teal' as const },
-  both:       { border: 'rgba(124,58,237,0.3)',  glow: 'rgba(124,58,237,0.12)', badge: 'purple' as const },
+  both:       { border: 'rgba(124,58,237,0.3)',  glow: 'rgba(124,58,237,0.12)', badge: 'lavender' as const },
 }
 
 export default function TalaCard({ tala }: { tala: Tala }) {
@@ -46,7 +46,7 @@ export default function TalaCard({ tala }: { tala: Tala }) {
           <div className="relative z-10 flex items-baseline gap-1.5 mb-3">
             <span
               className="font-display text-4xl font-light leading-none"
-              style={{ color: colors.badge === 'gold' ? '#f59e0b' : colors.badge === 'teal' ? '#2dd4bf' : '#c4b5fd' }}
+              style={{ color: colors.badge === 'gold' ? '#f59e0b' : colors.badge === 'teal' ? '#2dd4bf' : '#c4b5fd'  /* lavender */ }}
             >
               {tala.beats}
             </span>

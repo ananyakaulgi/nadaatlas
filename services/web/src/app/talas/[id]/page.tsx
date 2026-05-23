@@ -19,7 +19,7 @@ export default async function TalaDetailPage({ params }: Props) {
   const TRADITION_COLORS = {
     hindustani: { border: 'rgba(245,158,11,0.3)',  accent: '#f59e0b', badge: 'gold' as const },
     carnatic:   { border: 'rgba(20,184,166,0.3)',  accent: '#2dd4bf', badge: 'teal' as const },
-    both:       { border: 'rgba(124,58,237,0.3)',  accent: '#c4b5fd', badge: 'purple' as const },
+    both:       { border: 'rgba(124,58,237,0.3)',  accent: '#c4b5fd', badge: 'lavender' as const },
   }
   const colors = TRADITION_COLORS[tala.tradition as keyof typeof TRADITION_COLORS] ?? TRADITION_COLORS.both
 
