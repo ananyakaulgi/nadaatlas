@@ -8,11 +8,14 @@ import clsx from 'clsx'
 
 const NAV_LINKS = [
   { href: '/traditions', label: 'Traditions' },
-  { href: '/artists', label: 'Artists' },
-  { href: '/albums', label: 'Albums' },
-  { href: '/instruments', label: 'Instruments' },
-  { href: '/regions', label: 'Regions' },
-  { href: '/about', label: 'About' },
+  { href: '/ragas',      label: 'Ragas' },
+  { href: '/talas',      label: 'Talas' },
+  { href: '/composers',  label: 'Composers' },
+  { href: '/artists',    label: 'Artists' },
+  { href: '/instruments',label: 'Instruments' },
+  { href: '/genres',     label: 'Genres' },
+  { href: '/regions',    label: 'Regions' },
+  { href: '/about',      label: 'About' },
 ]
 
 export default function Header() {

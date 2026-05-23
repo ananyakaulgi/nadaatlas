@@ -1,4 +1,8 @@
-import type { Tradition, Artist, Album, Instrument, PaginatedResponse } from './types'
+import type {
+  Tradition, Artist, Album, Instrument,
+  Raga, Tala, Composer, Region, Genre,
+  PaginatedResponse,
+} from './types'
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
@@ -81,4 +85,100 @@ export async function getInstruments(params?: {
 
 export async function getInstrument(id: number | string): Promise<Instrument> {
   return fetchAPI(`/api/v1/instruments/${id}`)
+}
+
+// Ragas
+export async function getRagas(params?: {
+  skip?: number
+  limit?: number
+  tradition?: string
+  that?: string
+  melakarta_number?: number
+  search?: string
+}): Promise<PaginatedResponse<Raga>> {
+  const qs = new URLSearchParams()
+  if (params?.skip !== undefined) qs.set('skip', String(params.skip))
+  if (params?.limit !== undefined) qs.set('limit', String(params.limit))
+  if (params?.tradition) qs.set('tradition', params.tradition)
+  if (params?.that) qs.set('that', params.that)
+  if (params?.melakarta_number !== undefined) qs.set('melakarta_number', String(params.melakarta_number))
+  if (params?.search) qs.set('search', params.search)
+  const query = qs.toString() ? `?${qs.toString()}` : ''
+  return fetchAPI(`/api/v1/ragas/${query}`)
+}
+
+export async function getRaga(id: string): Promise<Raga> {
+  return fetchAPI(`/api/v1/ragas/${id}`)
+}
+
+// Talas
+export async function getTalas(params?: {
+  skip?: number
+  limit?: number
+  tradition?: string
+  beats?: number
+}): Promise<PaginatedResponse<Tala>> {
+  const qs = new URLSearchParams()
+  if (params?.skip !== undefined) qs.set('skip', String(params.skip))
+  if (params?.limit !== undefined) qs.set('limit', String(params.limit))
+  if (params?.tradition) qs.set('tradition', params.tradition)
+  if (params?.beats !== undefined) qs.set('beats', String(params.beats))
+  const query = qs.toString() ? `?${qs.toString()}` : ''
+  return fetchAPI(`/api/v1/talas/${query}`)
+}
+
+export async function getTala(id: string): Promise<Tala> {
+  return fetchAPI(`/api/v1/talas/${id}`)
+}
+
+// Composers
+export async function getComposers(params?: {
+  skip?: number
+  limit?: number
+  tradition_id?: string
+  era?: string
+  nationality?: string
+  search?: string
+}): Promise<PaginatedResponse<Composer>> {
+  const qs = new URLSearchParams()
+  if (params?.skip !== undefined) qs.set('skip', String(params.skip))
+  if (params?.limit !== undefined) qs.set('limit', String(params.limit))
+  if (params?.tradition_id) qs.set('tradition_id', params.tradition_id)
+  if (params?.era) qs.set('era', params.era)
+  if (params?.nationality) qs.set('nationality', params.nationality)
+  if (params?.search) qs.set('search', params.search)
+  const query = qs.toString() ? `?${qs.toString()}` : ''
+  return fetchAPI(`/api/v1/composers/${query}`)
+}
+
+export async function getComposer(id: string): Promise<Composer> {
+  return fetchAPI(`/api/v1/composers/${id}`)
+}
+
+// Regions
+export async function getRegions(params?: {
+  skip?: number
+  limit?: number
+  continent?: string
+}): Promise<PaginatedResponse<Region>> {
+  const qs = new URLSearchParams()
+  if (params?.skip !== undefined) qs.set('skip', String(params.skip))
+  if (params?.limit !== undefined) qs.set('limit', String(params.limit))
+  if (params?.continent) qs.set('continent', params.continent)
+  const query = qs.toString() ? `?${qs.toString()}` : ''
+  return fetchAPI(`/api/v1/regions/${query}`)
+}
+
+// Genres
+export async function getGenres(params?: {
+  skip?: number
+  limit?: number
+  search?: string
+}): Promise<PaginatedResponse<Genre>> {
+  const qs = new URLSearchParams()
+  if (params?.skip !== undefined) qs.set('skip', String(params.skip))
+  if (params?.limit !== undefined) qs.set('limit', String(params.limit))
+  if (params?.search) qs.set('search', params.search)
+  const query = qs.toString() ? `?${qs.toString()}` : ''
+  return fetchAPI(`/api/v1/genres/${query}`)
 }

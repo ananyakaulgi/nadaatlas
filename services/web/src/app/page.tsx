@@ -4,7 +4,7 @@ import { getTraditions } from '@/lib/api'
 export const dynamic = 'force-dynamic'
 import TraditionCard from '@/components/cards/TraditionCard'
 import RegionCard from '@/components/cards/RegionCard'
-import { Music2, Users, Disc3, Piano } from 'lucide-react'
+import { Music2, Users, Disc3, Piano, BookOpen, Clock, PenTool } from 'lucide-react'
 
 const FEATURE_CARDS = [
   {
@@ -15,6 +15,33 @@ const FEATURE_CARDS = [
     glow: 'rgba(124,58,237,0.25)',
     iconColor: 'text-[#c4b5fd]',
     borderColor: 'rgba(124,58,237,0.3)',
+  },
+  {
+    href: '/ragas',
+    icon: BookOpen,
+    title: 'Ragas',
+    description: '1,200+ melodic frameworks of Indian classical music',
+    glow: 'rgba(245,158,11,0.2)',
+    iconColor: 'text-[#f59e0b]',
+    borderColor: 'rgba(245,158,11,0.28)',
+  },
+  {
+    href: '/talas',
+    icon: Clock,
+    title: 'Talas',
+    description: 'The rhythmic cycles that hold Indian classical music in time',
+    glow: 'rgba(20,184,166,0.18)',
+    iconColor: 'text-[#2dd4bf]',
+    borderColor: 'rgba(20,184,166,0.28)',
+  },
+  {
+    href: '/composers',
+    icon: PenTool,
+    title: 'Composers',
+    description: 'The architects who shaped centuries of musical form',
+    glow: 'rgba(236,72,153,0.18)',
+    iconColor: 'text-[#f472b6]',
+    borderColor: 'rgba(236,72,153,0.25)',
   },
   {
     href: '/artists',
@@ -30,9 +57,9 @@ const FEATURE_CARDS = [
     icon: Piano,
     title: 'Instruments',
     description: 'The voices of wood, string, skin, and breath',
-    glow: 'rgba(245,158,11,0.2)',
-    iconColor: 'text-[#f59e0b]',
-    borderColor: 'rgba(245,158,11,0.25)',
+    glow: 'rgba(99,102,241,0.2)',
+    iconColor: 'text-[#818cf8]',
+    borderColor: 'rgba(99,102,241,0.28)',
   },
   {
     href: '/albums',
@@ -145,7 +172,7 @@ export default async function HomePage() {
         <p className="text-[#a89fc4] text-center mb-12 max-w-xl mx-auto">
           Every tradition, every artist, every instrument — charted.
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {FEATURE_CARDS.map((card) => {
             const Icon = card.icon
             return (
