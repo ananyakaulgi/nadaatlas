@@ -10,9 +10,24 @@ export const metadata: Metadata = {
 }
 
 const COMPOSITION_TYPES = [
-  'kriti', 'dhrupad', 'khayal', 'thumri', 'ghazal',
-  'varnam', 'javali', 'tillana', 'padam', 'tarana',
-  'dadra', 'chaiti', 'kajri', 'maqam',
+  // Western Classical
+  'symphony', 'concerto', 'sonata', 'opera', 'oratorio', 'mass', 'requiem',
+  'ballet', 'suite', 'prelude', 'toccata', 'fugue', 'nocturne', 'ballade',
+  'caprice', 'bagatelle', 'serenade', 'dance', 'variation',
+  // Jazz & Popular
+  'jazz', 'blues',
+  // Tango / Latin
+  'tango',
+  // African
+  'afrobeat', 'epic',
+  // Flamenco
+  'flamenco',
+  // Indian Classical (Carnatic)
+  'kriti', 'varnam', 'javali', 'tillana', 'padam',
+  // Indian Classical (Hindustani)
+  'dhrupad', 'khayal', 'thumri', 'ghazal', 'tarana', 'dadra', 'chaiti', 'kajri',
+  // Arabic / Turkish / Sufi
+  'qawwali', 'muwashshah', 'ayin', 'tasnif', 'maqam',
 ]
 
 interface PageProps {
