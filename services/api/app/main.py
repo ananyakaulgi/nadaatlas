@@ -19,6 +19,7 @@ from app.routers import (
     artists,
     composers,
     compositions,
+    feedback,
     genres,
     health,
     instruments,
@@ -124,6 +125,7 @@ app.include_router(ragas.router)
 app.include_router(talas.router)
 app.include_router(composers.router)
 app.include_router(compositions.router)
+app.include_router(feedback.router)
 
 # Auth router — added by the security agent; skip gracefully if not yet present
 try:

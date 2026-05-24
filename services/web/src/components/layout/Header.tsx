@@ -21,6 +21,7 @@ const MORE_NAV = [
   { href: '/instruments', label: 'Instruments' },
   { href: '/genres',      label: 'Genres' },
   { href: '/regions',     label: 'Regions' },
+  { href: '/feedback',    label: 'Feedback' },
 ]
 
 const ALL_NAV = [...PRIMARY_NAV, ...MORE_NAV]

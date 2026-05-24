@@ -1,0 +1,47 @@
+from datetime import datetime
+from uuid import UUID
+
+from pydantic import BaseModel, ConfigDict, EmailStr, field_validator
+
+VALID_CATEGORIES = {"bug_report", "missing_data", "feature_request", "general"}
+
+
+class FeedbackCreate(BaseModel):
+    category: str
+    name:         str | None = None
+    email:        str | None = None
+    subject:      str | None = None
+    message:      str
+    page_context: str | None = None
+
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    @field_validator("category")
+    @classmethod
+    def validate_category(cls, v: str) -> str:
+        if v not in VALID_CATEGORIES:
+            raise ValueError(f"category must be one of {sorted(VALID_CATEGORIES)}")
+        return v
+
+    @field_validator("message")
+    @classmethod
+    def validate_message(cls, v: str) -> str:
+        if not v or len(v.strip()) < 10:
+            raise ValueError("message must be at least 10 characters")
+        if len(v) > 5000:
+            raise ValueError("message must be 5000 characters or fewer")
+        return v
+
+
+class FeedbackResponse(BaseModel):
+    id:           UUID
+    category:     str
+    name:         str | None
+    email:        str | None
+    subject:      str | None
+    message:      str
+    page_context: str | None
+    status:       str
+    created_at:   datetime
+
+    model_config = ConfigDict(from_attributes=True)
