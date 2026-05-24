@@ -1,9 +1,10 @@
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, EmailStr, field_validator
+from pydantic import BaseModel, ConfigDict, field_validator
 
 VALID_CATEGORIES = {"bug_report", "missing_data", "feature_request", "general"}
+VALID_STATUSES = {"new", "in_progress", "fixed", "wont_fix", "duplicate"}
 
 
 class FeedbackCreate(BaseModel):
@@ -33,15 +34,31 @@ class FeedbackCreate(BaseModel):
         return v
 
 
+class FeedbackStatusUpdate(BaseModel):
+    status: str
+    resolution_note: str | None = None
+
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    @field_validator("status")
+    @classmethod
+    def validate_status(cls, v: str) -> str:
+        if v not in VALID_STATUSES:
+            raise ValueError(f"status must be one of {sorted(VALID_STATUSES)}")
+        return v
+
+
 class FeedbackResponse(BaseModel):
-    id:           UUID
-    category:     str
-    name:         str | None
-    email:        str | None
-    subject:      str | None
-    message:      str
-    page_context: str | None
-    status:       str
-    created_at:   datetime
+    id:              UUID
+    category:        str
+    name:            str | None
+    email:           str | None
+    subject:         str | None
+    message:         str
+    page_context:    str | None
+    status:          str
+    resolved_at:     datetime | None
+    resolution_note: str | None
+    created_at:      datetime
 
     model_config = ConfigDict(from_attributes=True)

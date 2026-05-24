@@ -25,8 +25,13 @@ class Feedback(Base):
     # Which page the user was on when they opened the form
     page_context: Mapped[str | None] = mapped_column(String(512), nullable=True)
 
-    # new | read | resolved  (for future admin use)
+    # new | in_progress | fixed | wont_fix | duplicate
     status: Mapped[str] = mapped_column(String(32), default="new", nullable=False)
+
+    resolved_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    resolution_note: Mapped[str | None] = mapped_column(String(1000), nullable=True)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
