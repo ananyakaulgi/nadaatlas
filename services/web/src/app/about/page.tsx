@@ -240,6 +240,12 @@ export default function AboutPage() {
           >
             Explore Instruments
           </Link>
+          <Link
+            href="/methodology"
+            className="px-8 py-3.5 text-[#a89fc4] text-sm font-medium rounded-xl border border-[rgba(124,58,237,0.2)] hover:border-[rgba(124,58,237,0.4)] hover:bg-[rgba(124,58,237,0.06)] transition-all duration-300"
+          >
+            Our Methodology
+          </Link>
         </div>
       </div>
 
