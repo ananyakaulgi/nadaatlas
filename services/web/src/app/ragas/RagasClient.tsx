@@ -57,7 +57,7 @@ export default function RagasClient({
   return (
     <>
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6 min-w-0">
         <SearchInput
           value={initialSearch}
           onChange={(v) => push({ search: v })}
@@ -67,7 +67,7 @@ export default function RagasClient({
         <select
           value={initialTradition}
           onChange={(e) => push({ tradition: e.target.value })}
-          className="px-4 py-2.5 rounded-xl text-sm text-[#f5f0ff] focus:outline-none transition-all min-w-[160px]"
+          className="px-4 py-2.5 rounded-xl text-sm text-[#f5f0ff] focus:outline-none min-w-[160px] shrink-0"
           style={SELECT_STYLE}
         >
           {TRADITIONS.map((t) => (
@@ -78,7 +78,7 @@ export default function RagasClient({
           <select
             value={initialThat}
             onChange={(e) => push({ that: e.target.value })}
-            className="px-4 py-2.5 rounded-xl text-sm text-[#f5f0ff] focus:outline-none transition-all min-w-[160px]"
+            className="px-4 py-2.5 rounded-xl text-sm text-[#f5f0ff] focus:outline-none min-w-[160px] shrink-0"
             style={SELECT_STYLE}
           >
             <option value="" style={{ background: '#130f25' }}>All thaats</option>

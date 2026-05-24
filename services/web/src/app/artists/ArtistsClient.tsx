@@ -41,7 +41,7 @@ export default function ArtistsClient({
   return (
     <div>
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6 min-w-0">
         <SearchInput
           value={initialSearch}
           onChange={(v) => push({ search: v })}

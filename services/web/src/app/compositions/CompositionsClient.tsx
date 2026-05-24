@@ -77,7 +77,7 @@ export default function CompositionsClient({
   return (
     <>
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6 min-w-0">
         <SearchInput
           value={initialSearch}
           onChange={(v) => push({ search: v })}
@@ -87,7 +87,7 @@ export default function CompositionsClient({
         <select
           value={initialType}
           onChange={(e) => push({ composition_type: e.target.value })}
-          className="px-4 py-2.5 rounded-xl text-sm text-[#f5f0ff] focus:outline-none transition-all min-w-[180px] capitalize"
+          className="px-4 py-2.5 rounded-xl text-sm text-[#f5f0ff] focus:outline-none min-w-[180px] shrink-0 capitalize"
           style={SELECT_STYLE}
         >
           <option value="" style={{ background: '#130f25' }}>All types</option>
