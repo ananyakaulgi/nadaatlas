@@ -22,7 +22,7 @@ export default async function ComposersPage({ searchParams }: Props) {
 
   try {
     const result = await getComposers({
-      limit: 200,
+      limit: 100,
       ...(era          ? { era }          : {}),
       ...(tradition_id ? { tradition_id } : {}),
     })
