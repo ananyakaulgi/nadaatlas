@@ -2,6 +2,7 @@ import { getTrack } from '@/lib/api'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Badge from '@/components/ui/Badge'
+import LinkedBadge from '@/components/ui/LinkedBadge'
 
 export const dynamic = 'force-dynamic'
 
@@ -35,9 +36,21 @@ export default async function TrackDetailPage({ params }: Props) {
           <p className="font-display text-2xl text-[#a89fc4] italic mb-4">{track.title_native}</p>
         )}
         <div className="flex flex-wrap gap-2">
-          {track.musical_tradition && <Badge variant="lavender">{track.musical_tradition}</Badge>}
-          {track.raga && <Badge variant="teal">{track.raga}</Badge>}
-          {track.tala && <Badge variant="sage">{track.tala}</Badge>}
+          {track.musical_tradition && (
+            <LinkedBadge href={`/artists?musical_tradition=${encodeURIComponent(track.musical_tradition)}`} variant="lavender">
+              {track.musical_tradition}
+            </LinkedBadge>
+          )}
+          {track.raga && (
+            <LinkedBadge href={`/ragas?search=${encodeURIComponent(track.raga)}`} variant="teal">
+              {track.raga}
+            </LinkedBadge>
+          )}
+          {track.tala && (
+            <LinkedBadge href={`/talas?search=${encodeURIComponent(track.tala)}`} variant="sage">
+              {track.tala}
+            </LinkedBadge>
+          )}
           {track.maqam && <Badge variant="sage">{track.maqam}</Badge>}
           {track.duration_seconds && (
             <Badge variant="gold">{formatDuration(track.duration_seconds)}</Badge>

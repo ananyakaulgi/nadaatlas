@@ -2,6 +2,7 @@ import { getComposition } from '@/lib/api'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Badge from '@/components/ui/Badge'
+import LinkedBadge from '@/components/ui/LinkedBadge'
 
 export const dynamic = 'force-dynamic'
 
@@ -34,7 +35,11 @@ export default async function CompositionDetailPage({ params }: Props) {
           )}
           {composition.language && <Badge variant="sage">{composition.language}</Badge>}
           {composition.year_composed && <Badge variant="gold">{composition.year_composed}</Badge>}
-          {composition.tradition && <Badge variant="teal">{composition.tradition.name}</Badge>}
+          {composition.tradition && (
+            <LinkedBadge href={`/traditions/${composition.tradition.id}`} variant="teal">
+              {composition.tradition.name}
+            </LinkedBadge>
+          )}
         </div>
       </div>
 

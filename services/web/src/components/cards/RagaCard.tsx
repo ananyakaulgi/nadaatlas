@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Badge from '@/components/ui/Badge'
+import LinkedBadge from '@/components/ui/LinkedBadge'
 import type { Raga } from '@/lib/types'
 
 const TRADITION_COLORS = {
@@ -33,9 +34,13 @@ export default function RagaCard({ raga }: { raga: Raga }) {
           <h3 className="font-display text-lg text-[#f5f0ff] group-hover:text-[#c4b5fd] transition-colors leading-tight">
             {raga.name}
           </h3>
-          <Badge variant={colors.badge} className="shrink-0 capitalize text-xs">
+          <LinkedBadge
+            href={raga.tradition === 'both' ? '/ragas' : `/ragas?tradition=${raga.tradition}`}
+            variant={colors.badge}
+            className="shrink-0 capitalize text-xs"
+          >
             {raga.tradition === 'both' ? 'Both' : raga.tradition}
-          </Badge>
+          </LinkedBadge>
         </div>
 
         {/* Native name */}

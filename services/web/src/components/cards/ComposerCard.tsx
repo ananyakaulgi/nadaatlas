@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Badge from '@/components/ui/Badge'
+import LinkedBadge from '@/components/ui/LinkedBadge'
 import type { Composer } from '@/lib/types'
 
 export default function ComposerCard({ composer }: { composer: Composer }) {
@@ -38,13 +39,21 @@ export default function ComposerCard({ composer }: { composer: Composer }) {
 
         {/* Dates + tradition */}
         <div className="relative z-10 flex flex-wrap gap-1.5 mb-3">
-          {composer.era && <Badge variant="gold">{composer.era}</Badge>}
+          {composer.era && (
+            <LinkedBadge href={`/composers?era=${encodeURIComponent(composer.era)}`} variant="gold">
+              {composer.era}
+            </LinkedBadge>
+          )}
           {(birthYear || deathYear) && (
             <Badge variant="sage">
               {birthYear ?? '?'}{deathYear ? ` – ${deathYear}` : ''}
             </Badge>
           )}
-          {composer.tradition && <Badge variant="teal">{composer.tradition.name}</Badge>}
+          {composer.tradition && (
+            <LinkedBadge href={`/traditions/${composer.tradition.id}`} variant="teal">
+              {composer.tradition.name}
+            </LinkedBadge>
+          )}
         </div>
 
         {/* Nationality / birth place */}

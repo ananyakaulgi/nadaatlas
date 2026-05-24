@@ -6,6 +6,7 @@ import Link from 'next/link'
 import type { Composition } from '@/lib/types'
 import SearchInput from '@/components/ui/SearchInput'
 import Badge from '@/components/ui/Badge'
+import LinkedBadge from '@/components/ui/LinkedBadge'
 
 interface Props {
   initialItems: Composition[]
@@ -134,16 +135,16 @@ export default function CompositionsClient({
 
                   <div className="flex flex-wrap gap-1.5 mt-1.5">
                     {c.composer && (
-                      <Badge variant="gold">{c.composer.name}</Badge>
+                      <LinkedBadge href={`/composers/${c.composer.id}`} variant="gold">{c.composer.name}</LinkedBadge>
                     )}
                     {c.composition_type && (
                       <Badge variant="lavender" className="capitalize">{c.composition_type}</Badge>
                     )}
                     {c.raga && (
-                      <Badge variant="teal">{c.raga.name}</Badge>
+                      <LinkedBadge href={`/ragas/${c.raga.id}`} variant="teal">{c.raga.name}</LinkedBadge>
                     )}
                     {c.tala && (
-                      <Badge variant="sage">{c.tala.name}</Badge>
+                      <LinkedBadge href={`/talas/${c.tala.id}`} variant="sage">{c.tala.name}</LinkedBadge>
                     )}
                     {c.language && (
                       <Badge variant="sage">{c.language}</Badge>

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Badge from '@/components/ui/Badge'
+import LinkedBadge from '@/components/ui/LinkedBadge'
 import type { Tala } from '@/lib/types'
 
 const TRADITION_COLORS = {
@@ -32,9 +33,13 @@ export default function TalaCard({ tala }: { tala: Tala }) {
           <h3 className="font-display text-xl text-[#f5f0ff] group-hover:text-[#c4b5fd] transition-colors leading-tight">
             {tala.name}
           </h3>
-          <Badge variant={colors.badge} className="shrink-0 capitalize">
+          <LinkedBadge
+            href={`/talas?tradition=${tala.tradition}`}
+            variant={colors.badge}
+            className="shrink-0 capitalize"
+          >
             {tala.tradition}
-          </Badge>
+          </LinkedBadge>
         </div>
 
         {tala.name_native && (

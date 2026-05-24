@@ -1,5 +1,6 @@
 import { getComposers } from '@/lib/api'
 import ComposerCard from '@/components/cards/ComposerCard'
+import Link from 'next/link'
 import type { Metadata } from 'next'
 import type { Composer } from '@/lib/types'
 
@@ -10,11 +11,21 @@ export const metadata: Metadata = {
   description: 'The composers who shaped world music — from the Carnatic Trinity to the masters of the Ottoman court',
 }
 
-export default async function ComposersPage() {
+interface Props {
+  searchParams: Promise<{ era?: string; tradition_id?: string }>
+}
+
+export default async function ComposersPage({ searchParams }: Props) {
+  const { era, tradition_id } = await searchParams
+
   let composers: Composer[] = []
 
   try {
-    const result = await getComposers({ limit: 100 })
+    const result = await getComposers({
+      limit: 200,
+      ...(era          ? { era }          : {}),
+      ...(tradition_id ? { tradition_id } : {}),
+    })
     composers = result.items
   } catch (err) {
     console.error('[ComposersPage] fetch failed:', err)
@@ -42,7 +53,6 @@ export default async function ComposersPage() {
     .filter((t) => byTradition[t])
     .map((t) => ({ name: t, items: byTradition[t] }))
 
-  // Any traditions not in our order list
   for (const key of Object.keys(byTradition)) {
     if (!TRADITION_ORDER.includes(key)) {
       orderedGroups.push({ name: key, items: byTradition[key] })
@@ -58,6 +68,25 @@ export default async function ComposersPage() {
           outlived their era and still resonate centuries on.
         </p>
       </div>
+
+      {/* Active filter pill */}
+      {era && (
+        <div className="flex items-center gap-2 mb-8">
+          <span className="text-sm text-[#a89fc4]">Filtered by era:</span>
+          <span
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium"
+            style={{ background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.35)', color: '#fbbf24' }}
+          >
+            {era}
+          </span>
+          <Link
+            href="/composers"
+            className="text-xs text-[#6b5d8a] hover:text-[#a89fc4] transition-colors ml-1"
+          >
+            Clear ×
+          </Link>
+        </div>
+      )}
 
       {orderedGroups.length > 0 ? (
         <div className="space-y-14">
@@ -80,8 +109,15 @@ export default async function ComposersPage() {
         </div>
       ) : (
         <div className="text-center py-20">
-          <p className="font-display text-xl text-[#c4b5fd] mb-2">No composers yet</p>
-          <p className="text-sm text-[#a89fc4]">Composers will appear here as data is added.</p>
+          <p className="font-display text-xl text-[#c4b5fd] mb-2">No composers found</p>
+          <p className="text-sm text-[#a89fc4] mb-4">
+            {era ? `No composers in the "${era}" era.` : 'Composers will appear here as data is added.'}
+          </p>
+          {era && (
+            <Link href="/composers" className="text-sm text-[#7c3aed] hover:text-[#a78bfa] transition-colors">
+              View all composers →
+            </Link>
+          )}
         </div>
       )}
     </div>

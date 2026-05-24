@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Badge from '@/components/ui/Badge'
+import LinkedBadge from '@/components/ui/LinkedBadge'
 import type { Artist } from '@/lib/types'
 
 function formatYear(dateStr: string | null): string | null {
@@ -45,7 +46,9 @@ export default function ArtistCard({ artist }: { artist: Artist }) {
         )}
 
         {artist.musical_tradition && (
-          <Badge variant="teal" className="mb-3 self-start relative z-10">{artist.musical_tradition}</Badge>
+          artist.tradition
+            ? <LinkedBadge href={`/traditions/${artist.tradition.id}`} variant="teal" className="mb-3 self-start relative z-10">{artist.musical_tradition}</LinkedBadge>
+            : <Badge variant="teal" className="mb-3 self-start relative z-10">{artist.musical_tradition}</Badge>
         )}
 
         {(bornYear || artist.nationality) && (
