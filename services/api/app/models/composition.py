@@ -63,6 +63,9 @@ class Composition(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     year_composed: Mapped[int | None] = mapped_column(Integer, nullable=True)
     wikipedia_slug: Mapped[str | None] = mapped_column(String(512), nullable=True)
+    openopus_id: Mapped[str | None] = mapped_column(
+        String(128), unique=True, nullable=True, index=True
+    )
 
     embedding: Mapped[list[float] | None] = mapped_column(
         Vector(1536), nullable=True

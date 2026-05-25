@@ -45,7 +45,9 @@ const PILLARS = [
 const SOURCES = [
   { name: 'MusicBrainz', description: 'Open music encyclopedia for artist and discography data', href: 'https://musicbrainz.org' },
   { name: 'Wikidata', description: 'Structured knowledge base for instruments and cultural context', href: 'https://wikidata.org' },
+  { name: 'OpenOpus', description: 'CC0 Western Classical works catalogue — 220 composers and ~25,000 compositions', href: 'https://openopus.org' },
   { name: 'Wikipedia', description: 'Biographical and historical information', href: 'https://wikipedia.org' },
+  { name: 'Smithsonian Open Access', description: 'Instrument images and ethnomusicological reference data', href: 'https://www.si.edu/openaccess' },
   { name: 'Spotify', description: 'Audio previews and artist imagery, where available', href: 'https://spotify.com' },
 ]
 

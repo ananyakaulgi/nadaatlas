@@ -26,6 +26,12 @@ const SOURCES = [
     href: 'https://musicbrainz.org',
   },
   {
+    name: 'OpenOpus',
+    role: 'Western Classical composer data and works catalogue — 220 composers, ~25,000 compositions, portraits, dates, and genre classification. Licensed CC0.',
+    reliability: 'Curatorially maintained open dataset; high confidence for classical repertoire',
+    href: 'https://openopus.org',
+  },
+  {
     name: 'Smithsonian Institution',
     role: 'Instrument images (Smithsonian Open Access), ethnomusicological reference data',
     reliability: 'Primary institutional source — high confidence',
@@ -57,7 +63,7 @@ const COVERAGE: { region: string; traditions: string; level: CoverageLevel; note
   { region: 'Southeast Asia',      traditions: 'Gamelan, Khmer, Thai Classical',                  level: 'sparse',  note: 'Expanding in v2' },
   { region: 'Central Asia / Iran', traditions: 'Persian Classical, Mugham, Uyghur Muqam',        level: 'sparse'   },
   { region: 'Latin America',       traditions: 'Tango, Samba, Cumbia, Son Cubano',                level: 'sparse'   },
-  { region: 'North America (Indigenous)', traditions: 'Plains, Pueblo, Pacific Northwest, Haudenosaunee', level: 'planned', note: 'Active data work in progress' },
+  { region: 'North America (Indigenous)', traditions: 'Plains, Haudenosaunee, Pacific Northwest, Diné, Anishinaabe, Inuit, Powwow', level: 'sparse', note: 'Initial seed complete; expanding' },
   { region: 'Eastern Europe',      traditions: 'Klezmer, Balkan, Roma, Byzantine',                level: 'sparse'   },
   { region: 'Oceania',             traditions: 'Aboriginal Australian, Māori, Pacific Islands',   level: 'planned', note: 'Planned for v3' },
 ]
@@ -102,8 +108,8 @@ const QUALITY_TIERS = [
 const KNOWN_GAPS = [
   {
     title: 'Native & Indigenous American music',
-    detail: 'The atlas launched with almost no coverage of Indigenous North American traditions — a significant omission we are actively correcting. Plains vocal traditions, Pueblo ceremonial music, Pacific Northwest song systems, and Haudenosaunee music are all being researched and seeded now.',
-    status: 'In progress',
+    detail: 'An initial seed of seven traditions is now live — Plains, Haudenosaunee, Pacific Northwest, Diné, Anishinaabe, Inuit, and Contemporary Powwow — with key artists and instruments documented. Coverage remains sparse compared to the richness of these traditions; we are continuing to expand with careful attention to cultural sensitivity and publicly shared (not sacred or restricted) knowledge.',
+    status: 'Sparse — expanding',
     statusColor: '#60a5fa',
   },
   {

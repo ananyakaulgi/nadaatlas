@@ -26,11 +26,8 @@ def upgrade() -> None:
         "feedback",
         sa.Column("resolution_note", sa.String(1000), nullable=True),
     )
-    # Index for fast admin queries
-    op.create_index("ix_feedback_status", "feedback", ["status"])
 
 
 def downgrade() -> None:
-    op.drop_index("ix_feedback_status", table_name="feedback")
     op.drop_column("feedback", "resolution_note")
     op.drop_column("feedback", "resolved_at")

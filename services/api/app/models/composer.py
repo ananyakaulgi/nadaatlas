@@ -50,6 +50,9 @@ class Composer(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
     wikidata_id: Mapped[str | None] = mapped_column(
         String(64), unique=True, nullable=True
     )
+    openopus_id: Mapped[str | None] = mapped_column(
+        String(16), unique=True, nullable=True, index=True
+    )
     wikipedia_slug: Mapped[str | None] = mapped_column(String(512), nullable=True)
 
     image_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)

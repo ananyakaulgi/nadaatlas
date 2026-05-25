@@ -19,6 +19,7 @@ class ComposerBase(BaseModel):
     biography_short: str | None = None
     musicbrainz_id: str | None = None
     wikidata_id: str | None = None
+    openopus_id: str | None = None
     wikipedia_slug: str | None = None
     image_url: str | None = None
     website_url: str | None = None
@@ -44,6 +45,7 @@ class ComposerUpdate(BaseModel):
     biography_short: str | None = None
     musicbrainz_id: str | None = None
     wikidata_id: str | None = None
+    openopus_id: str | None = None
     wikipedia_slug: str | None = None
     image_url: str | None = None
     website_url: str | None = None
