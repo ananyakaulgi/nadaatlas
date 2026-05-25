@@ -4,10 +4,20 @@ import type {
   PaginatedResponse,
 } from './types'
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+// API_URL is a server-side runtime env var (not baked into the bundle at build time).
+// NEXT_PUBLIC_API_URL is baked in at build time — fine for local dev, unreliable in
+// production Docker builds where the value isn't known at image build time.
+// Set API_URL in your Railway web service environment variables.
+function getBaseUrl() {
+  return (
+    process.env.API_URL ||
+    process.env.NEXT_PUBLIC_API_URL ||
+    'http://localhost:8000'
+  )
+}
 
 async function fetchAPI<T>(path: string): Promise<T> {
-  const url = `${BASE_URL}${path}`
+  const url = `${getBaseUrl()}${path}`
   const res = await fetch(url, { cache: 'no-store' })
   if (!res.ok) {
     throw new Error(`API error ${res.status}: ${url}`)
